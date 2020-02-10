@@ -5,19 +5,21 @@ import json
 import pulp
 
 
-COLUMN_HEADERS = ['library',
-                  'formula',
-                  'cost',
-                  'status',
-                  'type',
-                  'item',
-                  'amount',
-                  'minimum',
-                  'maximum']
+COLUMN_HEADERS = ['library_name',
+                  'formula_name',
+                  'formula_code',
+                  'formula_cost',
+                  'formula_status',
+                  'item_type',
+                  'item_name',
+                  'item_code',
+                  'item_amount',
+                  'item_minimum',
+                  'item_maximum']
 
 
 class Nutrient():
-    def __init__(self, name, unit=None):
+    def __init__(self, name, code=None, unit=None):
         """Create a Nutrient
         
         Args:
@@ -25,6 +27,7 @@ class Nutrient():
             unit (str, optional): unit of the nutrient, not yet implemented. Defaults to None.
         """
         self.name = name
+        self.code = code
         self.unit = unit
 
     def encode(self):
@@ -49,6 +52,10 @@ class IngredientNutrient():
     def name(self):
         return self.nutrient.name
 
+    @property
+    def code(self):
+        return self.nutrient.code
+
     def encode(self):
         return {'name': self.name,
                 'amount': self.amount}
@@ -58,7 +65,7 @@ class IngredientNutrient():
 
 
 class Ingredient():
-    def __init__(self, name, amount=None, cost=None, nutrients=None):
+    def __init__(self, name, code=None, amount=None, cost=None, nutrients=None):
         """Create an Ingredient
         
         Args:
@@ -68,6 +75,7 @@ class Ingredient():
             nutrients (dict, optional): formatted {[Nutrient]: amount}. Defaults to None.
         """
         self.name = name
+        self.code = code
         self.amount = amount
         self.cost = cost
         self.nutrients = []
@@ -118,8 +126,13 @@ class BoundNutrient():
     def name(self):
         return self.nutrient.name
 
+    @property
+    def code(self):
+        return self.nutrient.code
+
     def encode(self):
         return {'name': self.name,
+                'code': self.code,
                 'amount': self.amount,
                 'minimum': self.minimum,
                 'maximum': self.maximum}
@@ -146,6 +159,10 @@ class BoundIngredient():
     @property
     def name(self):
         return self.ingredient.name
+    
+    @property
+    def code(self):
+        return self.ingredient.code
 
     @property
     def cost(self):
@@ -157,6 +174,7 @@ class BoundIngredient():
 
     def encode(self):
         return {'name': self.name,
+                'code': self.code,
                 'amount': self.amount,
                 'minimum': self.minimum,
                 'maximum': self.maximum}
@@ -166,15 +184,17 @@ class BoundIngredient():
 
 
 class Formula():
-    def __init__(self, name, batch_size=1):
+    def __init__(self, name, code=None, batch_size=1):
         """Crate a Formula
 
         Args:
             name (str): name of the formula
+            code (str): code of the formula
             batch_size (float, optional): size of the batch, used for optimization
                                           all ingredient constraints must apply. Defaults to 1.
         """
         self.name = name
+        self.code = code
         self.batch_size = batch_size
         self.cost = 0
         self.ingredients = []
@@ -320,20 +340,24 @@ class Formula():
             writer.writerow(COLUMN_HEADERS)
         writer.writerows([[library_name if library_name else 'default',
                            self.name,
+                           self.code,
                            self.cost,
                            self.status,
                            'ingredient',
                            i.name,
+                           i.code,
                            i.amount,
                            i.minimum,
                            i.maximum]
                           for i in self.ingredients])
         writer.writerows([[library_name if library_name else 'default',
                            self.name,
+                           self.code,
                            self.cost,
                            self.status,
                            'nutrient',
                            n.name,
+                           n.code,
                            n.amount,
                            n.minimum,
                            n.maximum]

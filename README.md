@@ -39,15 +39,14 @@ print(starter.to_csv())
 
 ### outputs:
 
-| library | formula | cost        | status  | type       | item         | amount       | minimum | maximum | 
-|---------|---------|-------------|---------|------------|--------------|--------------|---------|---------| 
-| default | Starter | 67.16379819 | Optimal | ingredient | Corn         | 54.882934    | 1       |         | 
-| default | Starter | 67.16379819 | Optimal | ingredient | Soybean Meal | 22.674542    | 0       |         | 
-| default | Starter | 67.16379819 | Optimal | ingredient | Oil          | 4.1552541    | 0       | 5       | 
-| default | Starter | 67.16379819 | Optimal | ingredient | Limestone    | 8.2872701    | 0       |         | 
-| default | Starter | 67.16379819 | Optimal | ingredient | Meat Meal    | 10.0         | 0       | 10      | 
-| default | Starter | 67.16379819 | Optimal | nutrient   | Energy       | 3000.0000038 | 3000    |         | 
-| default | Starter | 67.16379819 | Optimal | nutrient   | Protein      | 20.00000021  | 20      |         | 
-| default | Starter | 67.16379819 | Optimal | nutrient   | Fiber        | 2.05230961   | 0       |         | 
-| default | Starter | 67.16379819 | Optimal | nutrient   | Calcium      | 4.0000000154 | 4       | 5       | 
-
+| library_name | formula_name | formula_code | formula_cost | formula_status | item_type  | item_name    | item_code | item_amount  | item_minimum | item_maximum | 
+|--------------|--------------|--------------|--------------|----------------|------------|--------------|-----------|--------------|--------------|--------------| 
+| default      | Starter      |              | 67.16379819  | Optimal        | ingredient | Corn         |           | 54.882934    | 1            |              | 
+| default      | Starter      |              | 67.16379819  | Optimal        | ingredient | Soybean Meal |           | 22.674542    | 0            |              | 
+| default      | Starter      |              | 67.16379819  | Optimal        | ingredient | Oil          |           | 4.1552541    | 0            | 5            | 
+| default      | Starter      |              | 67.16379819  | Optimal        | ingredient | Limestone    |           | 8.2872701    | 0            |              | 
+| default      | Starter      |              | 67.16379819  | Optimal        | ingredient | Meat Meal    |           | 10.0         | 0            | 10           | 
+| default      | Starter      |              | 67.16379819  | Optimal        | nutrient   | Energy       |           | 3000.0000038 | 3000         |              | 
+| default      | Starter      |              | 67.16379819  | Optimal        | nutrient   | Protein      |           | 20.00000021  | 20           |              | 
+| default      | Starter      |              | 67.16379819  | Optimal        | nutrient   | Fiber        |           | 2.05230961   | 0            |              | 
+| default      | Starter      |              | 67.16379819  | Optimal        | nutrient   | Calcium      |           | 4.0000000154 | 4            | 5            | 
