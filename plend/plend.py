@@ -304,18 +304,19 @@ class Formula():
     def to_json(self, indent=None):
         return json.dumps(self, default=lambda o: o.encode(), indent=indent)
 
-    def to_csv(self, library_name=None):
+    def to_csv(self, library_name=None, write_header=True):
         """Return a csv representation of the Formula
 
         Args:
-            library_name (str, optional): name of the library, will not print headers if not None. Defaults to None.
+            library_name (str, optional): name of the library. Defaults to None.
+            write_header (bool, optional): whether or not to write the header row. Defaults to True.
 
         Returns:
             str: csv table representation
         """
         output = io.StringIO()
         writer = csv.writer(output)
-        if not library_name:
+        if write_header:
             writer.writerow(COLUMN_HEADERS)
         writer.writerows([[library_name if library_name else 'default',
                            self.name,
@@ -339,14 +340,15 @@ class Formula():
                           for n in self.nutrients])
         return output.getvalue()
 
-    def save_csv(self, filename):
-        """Save the Formula as a csv
+    def save_csv(self, filename, library_name=None):
+        """Save the Formula as a csv, overwrites any existing file with the same name
 
         Args:
             filename (str): name of the file
+            library_name (str, optional): name of the library. Defaults to None.
         """
         with open(filename, 'w', newline='') as file:
-            file.write(self.to_csv())
+            file.write(self.to_csv(library_name=library_name, write_header=True))
 
 
 class FormulaLibrary():
@@ -412,11 +414,11 @@ class FormulaLibrary():
         writer.writerow(COLUMN_HEADERS)
         csv_string += output.getvalue()
         for formula in self.formulas:
-            csv_string += formula.to_csv(library_name=self.name)
+            csv_string += formula.to_csv(library_name=self.name, write_header=False)
         return csv_string
 
     def save_csv(self, filename):
-        """Save the FormulaLibrary as a csv
+        """Save the FormulaLibrary as a csv, overwrites any existing file with the same name
 
         Args:
             filename (str): name of the file
