@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 version_dict = {}
-exec(open('plend/constants.py').read(), version_dict)
+exec(open('constants.py').read(), version_dict)
 VERSION = version_dict['VERSION']
 
 with open('requirements.txt') as f:
