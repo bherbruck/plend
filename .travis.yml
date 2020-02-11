@@ -7,6 +7,5 @@ python:
     - 3.6
 
 install: pip install .
-before_script: pip install coverage python-coveralls
+before_script: pip install
 script: python3 -m unittest discover tests
-after_success: coveralls
