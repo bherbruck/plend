@@ -18,6 +18,10 @@ Plend is a library for performing least cost formulation with Python. Plend uses
 ```
 $ pip install git+https://github.com/bherbruck/plend
 ```
+or
+```
+$ pip install plend
+```
 
 ## Examples
 
