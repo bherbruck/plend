@@ -1,5 +1,4 @@
 import unittest
-import cookiecutter
 
 from plend import Formula, FormulaLibrary, Ingredient, Nutrient
 from plend.presets.poultry import *
