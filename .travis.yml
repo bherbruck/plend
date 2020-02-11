@@ -6,5 +6,7 @@ python:
     - 3.7
     - 3.6
 
-before_script: pip install pulp .
+install:
+    - pip install -r requirements.txt
+    - pip install .
 script: python3 -m unittest discover tests
