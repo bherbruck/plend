@@ -1,6 +1,12 @@
 # plend
 
-[![Build Status](https://travis-ci.org/bherbruck/plend.svg?branch=master)](https://travis-ci.org/bherbruck/plend)
+[license-image]: https://img.shields.io/npm/l/make-coverage-badge.svg
+[license-url]: https://opensource.org/licenses/MIT
+[travis-url]: https://travis-ci.org/bherbruck/plend
+[travis-image]: https://travis-ci.org/bherbruck/plend.svg?branch=master
+
+[![License][license-image]][license-url]
+[![Build Status][travis-image]][travis-url]
 
 Plend is a library for performing least cost formulation with Python. Plend uses [PuLP](https://github.com/coin-or/pulp) to solve formula constraint problems.
 
