@@ -132,3 +132,6 @@ dmypy.json
 
 # pypi
 .pypirc
+
+# scripts
+.scripts
