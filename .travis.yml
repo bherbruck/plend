@@ -6,6 +6,5 @@ python:
     - 3.7
     - 3.6
 
-install: pip install .
-before_script: pip install
+before_script: pip install pulp .
 script: python3 -m unittest discover tests
