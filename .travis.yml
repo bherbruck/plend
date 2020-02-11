@@ -6,7 +6,6 @@ python:
     - 3.7
     - 3.6
 
-install:
-    - pip install -r requirements.txt
-    - pip install .
+install: pip install -r requirements.txt
+before_script: pip install .
 script: python3 -m unittest discover tests
