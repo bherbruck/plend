@@ -1,1 +1,1 @@
-from .plend import *
+from .core import *
