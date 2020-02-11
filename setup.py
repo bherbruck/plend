@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(name='plend',
       version='0.1.3',
-      desctiption='Python Feed Formulation',
+      desctiption='Least Cost Formulation with Python',
       auhor='Brennen Herbruck',
       author_email='brennen.herbruck@gmail.com',
       license='MIT',
