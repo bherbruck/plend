@@ -1,12 +1,11 @@
 from setuptools import setup, find_packages
-from plend import __version__, __author__, __email__
 
 
 setup(name='plend',
-      version=__version__,
+      version='0.1.3',
       desctiption='Python Feed Formulation',
-      auhor=__author__,
-      author_email=__email__,
+      auhor='Brennen Herbruck',
+      author_email='brennen.herbruck@gmail.com',
       license='MIT',
       url='https://github.com/bherbruck/plend',
       install_requires=['PuLP==2.0'],
