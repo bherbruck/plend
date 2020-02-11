@@ -1,0 +1,10 @@
+os: linux
+dist: bionic
+language: python
+
+python:
+    - 3.8
+    - 3.7
+
+before_script: pip install .
+script: python3 -m unittest discover tests
