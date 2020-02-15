@@ -108,7 +108,7 @@ class Ingredient():
 
 
 class BoundNutrient():
-    def __init__(self, nutrient, amount=None, minimum=0, maximum=None):
+    def __init__(self, nutrient, amount=None, minimum=0, maximum=None, formula=None):
         """Nutrient with constraints and amount
         
         Args:
@@ -121,6 +121,7 @@ class BoundNutrient():
         self.amount = amount
         self.minimum = minimum
         self.maximum = maximum
+        self.formula = formula
 
     @property
     def name(self):
@@ -142,7 +143,7 @@ class BoundNutrient():
 
 
 class BoundIngredient():
-    def __init__(self, ingredient, amount=None, minimum=0, maximum=None):
+    def __init__(self, ingredient, amount=None, minimum=0, maximum=None, formula=None):
         """Ingredient with constraints and amount
         
         Args:
@@ -155,6 +156,7 @@ class BoundIngredient():
         self.amount = amount
         self.minimum = minimum
         self.maximum = maximum
+        self.formula = formula
 
     @property
     def name(self):
@@ -171,6 +173,13 @@ class BoundIngredient():
     @property
     def nutrients(self):
         return self.ingredient.nutrients
+    
+    @property
+    def percent(self):
+        if self.formula and self.formula.batch_size and self.amount:
+            return float(self.amount) / float(self.formula.batch_size)
+        else:
+            return None
 
     def encode(self):
         return {'name': self.name,
@@ -212,16 +221,16 @@ class Formula():
             maximum (float, optional): maximum amount to use in the formula. Defaults to None.
         """
         self.ingredients.append(BoundIngredient(
-            ingredient, amount, minimum, maximum))
+            ingredient, amount, minimum, maximum, formula=self))
 
-    def add_ingredients(self, ingredients):
+    def add_ingredients(self, ingredient_dict):
         """Add a dict of ingredients
 
         Args:
-            ingredients (dict): formatted {[Ingredient]: amount}
+            ingredient_dict (dict): formatted {Ingredient: (minimum, maximum)}
         """
-        for ingredient, (minimum, maximum) in ingredients.items():
-            self.add_ingredient(ingredient, minimum=minimum, maximum=maximum)
+        for ingredient, (minimum, maximum) in ingredient_dict.items():
+            self.add_ingredient(ingredient, minimum=minimum, maximum=maximum, formula=self)
 
     def add_nutrient(self, nutrient, amount=None, minimum=0, maximum=None):
         """Add an nutrient with bounds to the formula
@@ -233,13 +242,19 @@ class Formula():
             maximum (float, optional): maximum amount to use in the formula. Defaults to None.
         """
         self.nutrients.append(BoundNutrient(
-            nutrient, amount, minimum, maximum))
+            nutrient, amount, minimum, maximum, formula=self))
+        
+    def add_nutrients(self, nutrient_dict):
+        """Add a dict of nutrient
+
+        Args:
+            nutrient (dict): formatted {Ingredient: (minimum, maximum)}
+        """
+        for nutrient, (minimum, maximum) in nutrient_dict.items():
+            self.add_nutrient(nutrient, minimum=minimum, maximum=maximum, formula=self)
 
     def optimize(self):
         """Optimize the formula
-
-        TODO:
-            add exact ingredient amount constraints
         """
 
         # create problem varialbes with bounds associated to ingredients
@@ -420,7 +435,6 @@ class FormulaLibrary():
         return self.__dict__
 
     def decode(self):
-        # TODO maybe
         pass
 
     def to_json(self):
