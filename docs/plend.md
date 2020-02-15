@@ -1,41 +1,17 @@
 # plend documentation
 
-## Subpackages
+## Main Classes
+- [Formula](#Formula)
+- [Nutrient](#Nutrient)
+- [Ingredient](#Ingredient)
+- [FormulaLibrary](#FormulaLibrary)
 
-## plend module
-
-
-### class plend.BoundIngredient(ingredient, amount=None, minimum=0, maximum=None)
-Bases: `object`
-
-
-#### property code()
-
-#### property cost()
-
-#### decode()
-
-#### encode()
-
-#### property name()
-
-#### property nutrients()
-
-### class plend.BoundNutrient(nutrient, amount=None, minimum=0, maximum=None)
-Bases: `object`
+---
 
 
-#### property code()
-
-#### decode()
-
-#### encode()
-
-#### property name()
-
+## Formula
+---
 ### class plend.Formula(name, code=None, batch_size=1)
-Bases: `object`
-
 
 #### add_ingredient(ingredient, amount=None, minimum=0, maximum=None)
 Add an ingredient with bounds to the formula
@@ -66,23 +42,8 @@ Args:
     minimum (float, optional): minimum amount to use in the formula. Defaults to 0.
     maximum (float, optional): maximum amount to use in the formula. Defaults to None.
 
-
-#### decode()
-
-#### encode()
-Encode for json
-
-Returns:
-
-    dict: json dict representation
-
-
 #### optimize()
 Optimize the formula
-
-TODO:
-
-    add exact ingredient amount constraints
 
 
 #### save_csv(filename, library_name=None)
@@ -121,22 +82,6 @@ Returns:
 Bases: `object`
 
 A library of nutrients, ingredients, and formulas
-
-
-#### add_formulas(\*formulas)
-
-#### add_ingredients(\*ingredients)
-
-#### add_nutrients(\*nutrients)
-
-#### decode()
-
-#### encode()
-Encode for json
-
-Returns:
-
-    dict: json dict representation
 
 
 #### optimize()
@@ -180,27 +125,16 @@ Args:
     nutrients (dict): formatted {[Nutrient]: amount}
 
 
-#### decode()
-
-#### encode()
-
 ### class plend.IngredientNutrient(nutrient, amount=None)
-Bases: `object`
-
-
-#### property code()
-
-#### decode()
-
-#### encode()
-
-#### property name()
 
 ### class plend.Nutrient(name, code=None, unit=None)
-Bases: `object`
 
 
-#### decode()
 
-#### encode()
-## Module contents
+### class plend.BoundIngredient(ingredient, amount=None, minimum=0, maximum=None)
+
+ BoundIngredient is an internal class used to link an ingredient with amount, minimum, and maximum to a [Formula](#Formula)
+
+### class plend.BoundNutrient(nutrient, amount=None, minimum=0, maximum=None)
+
+BoundNutrient is an internal class used to link an nutrient with amount, minimum, and maximum to a [Formula](#Formula)
