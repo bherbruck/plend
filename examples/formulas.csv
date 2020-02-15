@@ -1,0 +1,28 @@
+library_name,formula_name,formula_code,formula_cost,formula_status,item_type,item_name,item_code,item_amount,item_minimum,item_maximum
+Broiler,Starter,B1,68.312016841,Optimal,ingredient,Corn,,58.587658,0,
+Broiler,Starter,B1,68.312016841,Optimal,ingredient,Soybean Meal,,30.429012,0,
+Broiler,Starter,B1,68.312016841,Optimal,ingredient,Oil,,0.63258515,0,10
+Broiler,Starter,B1,68.312016841,Optimal,ingredient,Limestone,,0.35074529,0,
+Broiler,Starter,B1,68.312016841,Optimal,ingredient,Meat Meal,,10.0,0,10
+Broiler,Starter,B1,68.312016841,Optimal,nutrient,Energy,,3010.0000132,3010,
+Broiler,Starter,B1,68.312016841,Optimal,nutrient,Protein,,24.000000110000002,24,
+Broiler,Starter,B1,68.312016841,Optimal,nutrient,Fiber,,2.37756181,0,
+Broiler,Starter,B1,68.312016841,Optimal,nutrient,Calcium,,1.0,1,
+Broiler,Grower,B2,68.284483722,Optimal,ingredient,Corn,,61.16353,0,
+Broiler,Grower,B2,68.284483722,Optimal,ingredient,Soybean Meal,,25.859865,0,
+Broiler,Grower,B2,68.284483722,Optimal,ingredient,Oil,,2.8656471,0,10
+Broiler,Grower,B2,68.284483722,Optimal,ingredient,Limestone,,0.11095768,0,
+Broiler,Grower,B2,68.284483722,Optimal,ingredient,Meat Meal,,10.0,0,10
+Broiler,Grower,B2,68.284483722,Optimal,nutrient,Energy,,3174.9999923,3175,
+Broiler,Grower,B2,68.284483722,Optimal,nutrient,Protein,,21.999999950000003,22,
+Broiler,Grower,B2,68.284483722,Optimal,nutrient,Fiber,,2.3048842,0,
+Broiler,Grower,B2,68.284483722,Optimal,nutrient,Calcium,,0.9000000014,0.9,
+Broiler,Finisher,B3,66.00538196504,Optimal,ingredient,Corn,,66.023255,0,
+Broiler,Finisher,B3,66.00538196504,Optimal,ingredient,Soybean Meal,,20.933866,0,
+Broiler,Finisher,B3,66.00538196504,Optimal,ingredient,Oil,,3.038852,0,10
+Broiler,Finisher,B3,66.00538196504,Optimal,ingredient,Limestone,,0.0040261626,0,
+Broiler,Finisher,B3,66.00538196504,Optimal,ingredient,Meat Meal,,10.0,0,10
+Broiler,Finisher,B3,66.00538196504,Optimal,nutrient,Energy,,3224.9999740000003,3225,
+Broiler,Finisher,B3,66.00538196504,Optimal,nutrient,Protein,,19.999999805,20,
+Broiler,Finisher,B3,66.00538196504,Optimal,nutrient,Fiber,,2.278597355,0,
+Broiler,Finisher,B3,66.00538196504,Optimal,nutrient,Calcium,,0.849999999288,0.85,
