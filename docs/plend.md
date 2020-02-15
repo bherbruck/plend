@@ -1,11 +1,11 @@
-# plend package
+# plend documentation
 
 ## Subpackages
 
-## plend.core module
+## plend module
 
 
-### class plend.core.BoundIngredient(ingredient, amount=None, minimum=0, maximum=None)
+### class plend.BoundIngredient(ingredient, amount=None, minimum=0, maximum=None)
 Bases: `object`
 
 
@@ -21,7 +21,7 @@ Bases: `object`
 
 #### property nutrients()
 
-### class plend.core.BoundNutrient(nutrient, amount=None, minimum=0, maximum=None)
+### class plend.BoundNutrient(nutrient, amount=None, minimum=0, maximum=None)
 Bases: `object`
 
 
@@ -33,7 +33,7 @@ Bases: `object`
 
 #### property name()
 
-### class plend.core.Formula(name, code=None, batch_size=1)
+### class plend.Formula(name, code=None, batch_size=1)
 Bases: `object`
 
 
@@ -117,7 +117,7 @@ Returns:
 
 #### to_json(indent=None)
 
-### class plend.core.FormulaLibrary(name, units=None, nutrients=None, ingredients=None, formulas=None)
+### class plend.FormulaLibrary(name, units=None, nutrients=None, ingredients=None, formulas=None)
 Bases: `object`
 
 A library of nutrients, ingredients, and formulas
@@ -159,7 +159,7 @@ Returns:
 
 #### to_json()
 
-### class plend.core.Ingredient(name, code=None, amount=None, cost=None, nutrients=None)
+### class plend.Ingredient(name, code=None, amount=None, cost=None, nutrients=None)
 Bases: `object`
 
 
@@ -184,7 +184,7 @@ Args:
 
 #### encode()
 
-### class plend.core.IngredientNutrient(nutrient, amount=None)
+### class plend.IngredientNutrient(nutrient, amount=None)
 Bases: `object`
 
 
@@ -196,7 +196,7 @@ Bases: `object`
 
 #### property name()
 
-### class plend.core.Nutrient(name, code=None, unit=None)
+### class plend.Nutrient(name, code=None, unit=None)
 Bases: `object`
 
 

@@ -5,7 +5,7 @@ contain the root `toctree` directive. -->
 # Welcome to plend’s documentation!
 
 
-* plend package
+* [Plend](plend.md)
 
 
 # Indices and tables
