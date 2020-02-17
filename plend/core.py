@@ -209,7 +209,7 @@ class BoundIngredient():
 
 class Formula():
     def __init__(self, name, code=None, batch_size=1, unit=None):
-        """Crate a Formula
+        """Create a Formula
 
         Args:
             name (str): name of the formula
