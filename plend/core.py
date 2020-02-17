@@ -217,6 +217,10 @@ class Formula():
             batch_size (float, optional): size of the batch,
                 used for optimization all ingredient constraints must apply.
                 Defaults to 1.
+                
+        TODO:
+            Refactor optimization process
+            Add unit to csv output
         """
         self.name = name
         self.code = code
@@ -225,8 +229,9 @@ class Formula():
         self.cost = 0
         self.ingredients = []
         self.nutrients = []
+        self.variables = {}
         self.problem = None
-        self.status = 'Unoptimized'
+        self.status = 'Unsolved'
 
     def add_ingredient(self, ingredient, amount=None, minimum=0, maximum=None):
         """Add an ingredient with bounds to the formula
@@ -276,12 +281,11 @@ class Formula():
         for nutrient, (minimum, maximum) in nutrient_dict.items():
             self.add_nutrient(nutrient, minimum=minimum,
                               maximum=maximum, formula=self)
-
-    def optimize(self):
-        """Optimize the formula
+                                       
+    def create_problem(self):
+        """Create the PuLP problem to be solved
         """
-
-        # create problem varialbes with bounds associated to ingredients
+        # create problem variables with bounds associated to ingredients
         variables = {i: pulp.LpVariable(name=i.name,
                                         lowBound=i.minimum,
                                         upBound=i.maximum)
@@ -316,13 +320,19 @@ class Formula():
                                       if n.name == nutrient.name])
                 prob += maximum / self.batch_size \
                     <= nutrient.maximum, f'max_{nutrient.name}'
-
-        prob.solve()
-        self.status = pulp.LpStatus[prob.status]
+        self.variables = variables
         self.problem = prob
+                    
+    def solve_problem(self):
+        """Solve the problem
+        """
+        if not self.problem:
+            self.create_problem()
+        self.problem.solve()
+        self.status = pulp.LpStatus[self.problem.status]
 
         # set ingredient amounts from problem output
-        for ingredient, variable in variables.items():
+        for ingredient, variable in self.variables.items():
             ingredient.amount = variable.varValue
             self.cost += ingredient.cost * \
                 (ingredient.amount / self.batch_size)
@@ -330,10 +340,16 @@ class Formula():
         # set nutrient amounts from problem output
         for nutrient in self.nutrients:
             nutrient.amount = sum([i.amount * n.amount
-                                   for i in self.ingredients
-                                   for n in i.nutrients
-                                   if n.name == nutrient.name]) \
-                                       / self.batch_size
+                                for i in self.ingredients
+                                for n in i.nutrients
+                                if n.name == nutrient.name]) \
+                                    / self.batch_size
+        
+    def optimize(self):
+        """Optimize the formula by creating and solving the formula problem
+        """
+        self.create_problem()
+        self.solve_problem()
 
     def show_problem(self):
         """Prints the problem's function
