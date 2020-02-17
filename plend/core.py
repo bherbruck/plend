@@ -68,7 +68,7 @@ class Ingredient():
     def __init__(self, name, code=None, amount=None,
                  cost=None, nutrients=None):
         """Create an Ingredient
-        
+
         Args:
             name (str): name of the ingredient
             amount (float, optional): amount of the ingredient. 
@@ -190,7 +190,7 @@ class BoundIngredient():
             return float(self.amount) / float(self.formula.batch_size)
         else:
             return None
-    
+
     @property
     def unit(self):
         if self.formula:
@@ -217,12 +217,12 @@ class Formula():
             batch_size (float, optional): size of the batch,
                 used for optimization all ingredient constraints must apply.
                 Defaults to 1.
-                
+
         TODO:
             Refactor optimization process
             Add unit to csv output
             Add items property (ingredients and nutrients in one list)
-            Handle overlapping ingredients/nutriends
+            Write tests for overlapping ingredients/nutrients
         """
         self.name = name
         self.code = code
@@ -236,7 +236,7 @@ class Formula():
         self.status = 'Unsolved'
 
     def add_ingredient(self, ingredient, amount=None, minimum=0, maximum=None):
-        """Add an ingredient with bounds to the formula
+        """Add an ingredient with bounds to the formula, update if it exists
 
         Args:
             ingredient (BoundIngredient): ingredient to add
@@ -247,21 +247,30 @@ class Formula():
             maximum (float, optional): maximum amount to use in the formula.
                 Defaults to None.
         """
-        self.ingredients.append(BoundIngredient(
-            ingredient, amount, minimum, maximum, formula=self))
+        bi = next((i for i in self.ingredients if i.ingredient == ingredient), None)
+        # update the nutrient if it already exists
+        if bi:
+            bi.amount = amount
+            bi.minimum = minimum
+            bi.maximum = maximum
+            bi.formula = self
+        # add a new nutrient if it does not exist
+        else:
+            self.ingredients.append(BoundIngredient(
+                ingredient, amount, minimum, maximum, formula=self))
 
     def add_ingredients(self, ingredient_dict):
         """Add a dict of ingredients
-        
+
         Args:
             ingredient_dict (dict): formatted {Ingredient: (minimum, maximum)}
         """
         for ingredient, (minimum, maximum) in ingredient_dict.items():
             self.add_ingredient(ingredient, minimum=minimum,
-                                maximum=maximum, formula=self)
-        
+                                maximum=maximum)
+
     def add_nutrient(self, nutrient, amount=None, minimum=0, maximum=None):
-        """Add an nutrient with bounds to the formula
+        """Add an nutrient with bounds to the formula, update if it exists
 
         Args:
             nutrient (BoundNutrient): nutrient to add
@@ -271,8 +280,18 @@ class Formula():
             maximum (float, optional): maximum amount to use in the formula.
                 Defaults to None.
         """
-        self.nutrients.append(BoundNutrient(
-            nutrient, amount, minimum, maximum, formula=self))
+        # check if the nutrient exists for updating
+        bn = next((n for n in self.nutrients if n.nutrient == nutrient), None)
+        # update the nutrient if it already exists
+        if bn:
+            bn.amount = amount
+            bn.minimum = minimum
+            bn.maximum = maximum
+            bn.formula = self
+        # add a new nutrient if it does not exist
+        else:
+            self.nutrients.append(BoundNutrient(
+                nutrient, amount, minimum, maximum, formula=self))
 
     def add_nutrients(self, nutrient_dict):
         """Add a dict of nutrient
@@ -282,13 +301,13 @@ class Formula():
         """
         for nutrient, (minimum, maximum) in nutrient_dict.items():
             self.add_nutrient(nutrient, minimum=minimum,
-                              maximum=maximum, formula=self)
-            
+                              maximum=maximum)
+
     def derive_from(self, formula):
         """Copy the ingredients and nutrients from another formula.
         Does NOT overwrite existing items.
-        
-        Arguments:
+
+        Args:
             formula (Formula): Formla to derive from.
         """
         if len(self.ingredients) > 0:
@@ -307,7 +326,7 @@ class Formula():
             nuts = formula.nutrients
         self.ingredients += ings
         self.nutrients += nuts
-                                       
+
     def create_problem(self):
         """Create the PuLP problem to be solved
         """
@@ -326,7 +345,7 @@ class Formula():
         # total function (uses ingredient bounds from variables)
         prob += pulp.lpSum([variables[i]
                             for i in self.ingredients]) \
-                                == self.batch_size, 'total'
+            == self.batch_size, 'total'
 
         # nutrient bounds
         for nutrient in self.nutrients:
@@ -348,7 +367,7 @@ class Formula():
                     <= nutrient.maximum, f'max_{nutrient.name}'
         self.variables = variables
         self.problem = prob
-                    
+
     def solve_problem(self):
         """Solve the problem
         """
@@ -366,11 +385,11 @@ class Formula():
         # set nutrient amounts from problem output
         for nutrient in self.nutrients:
             nutrient.amount = sum([i.amount * n.amount
-                                for i in self.ingredients
-                                for n in i.nutrients
-                                if n.name == nutrient.name]) \
-                                    / self.batch_size
-        
+                                   for i in self.ingredients
+                                   for n in i.nutrients
+                                   if n.name == nutrient.name]) \
+                / self.batch_size
+
     def optimize(self):
         """Optimize the formula by creating and solving the formula problem
         """
