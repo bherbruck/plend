@@ -283,6 +283,30 @@ class Formula():
         for nutrient, (minimum, maximum) in nutrient_dict.items():
             self.add_nutrient(nutrient, minimum=minimum,
                               maximum=maximum, formula=self)
+            
+    def derive_from(self, formula):
+        """Copy the ingredients and nutrients from another formula.
+        Does NOT overwrite existing items.
+        
+        Arguments:
+            formula (Formula): Formla to derive from.
+        """
+        if len(self.ingredients) > 0:
+            ings = [fi
+                    for fi in formula.ingredients
+                    for si in self.ingredients
+                    if si.ingredient != fi.ingredient]
+        else:
+            ings = formula.ingredients
+        if len(self.nutrients) > 0:
+            nuts = [fn
+                    for fn in formula.nutrients
+                    for sn in self.nutrients
+                    if sn.name != fn.name]
+        else:
+            nuts = formula.nutrients
+        self.ingredients += ings
+        self.nutrients += nuts
                                        
     def create_problem(self):
         """Create the PuLP problem to be solved
