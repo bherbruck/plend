@@ -12,11 +12,13 @@ Plend is a library for performing least cost formulation with Python. Plend uses
 
 ## Installation
 
-```
+```text
 $ pip install git+https://github.com/bherbruck/plend
 ```
+
 or
-```
+
+```text
 $ pip install plend
 ```
 
