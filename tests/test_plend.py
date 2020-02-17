@@ -8,35 +8,35 @@ class TestFormulaLibrary(unittest.TestCase):
 
     def setUp(self):
         self.flib_csv = """library_name,formula_name,formula_code,formula_cost,formula_status,item_type,item_name,item_code,item_amount,item_minimum,item_maximum
-Poultry,Starter,,0,Unoptimized,ingredient,Corn,,,1,
-Poultry,Starter,,0,Unoptimized,ingredient,Soybean Meal,,,0,
-Poultry,Starter,,0,Unoptimized,ingredient,Oil,,,0,5
-Poultry,Starter,,0,Unoptimized,ingredient,Limestone,,,0,
-Poultry,Starter,,0,Unoptimized,ingredient,Meat Meal,,,0,10
-Poultry,Starter,,0,Unoptimized,nutrient,Energy,,,3000,
-Poultry,Starter,,0,Unoptimized,nutrient,Protein,,,20,
-Poultry,Starter,,0,Unoptimized,nutrient,Fiber,,,0,
-Poultry,Starter,,0,Unoptimized,nutrient,Calcium,,,4,5
-Poultry,Finisher,,0,Unoptimized,ingredient,Corn,,,1,
-Poultry,Finisher,,0,Unoptimized,ingredient,Soybean Meal,,,0,
-Poultry,Finisher,,0,Unoptimized,ingredient,Oil,,,0,5
-Poultry,Finisher,,0,Unoptimized,ingredient,Limestone,,,0,
-Poultry,Finisher,,0,Unoptimized,ingredient,Meat Meal,,,0,10
-Poultry,Finisher,,0,Unoptimized,nutrient,Energy,,,3000,
-Poultry,Finisher,,0,Unoptimized,nutrient,Protein,,,20,
-Poultry,Finisher,,0,Unoptimized,nutrient,Fiber,,,0,
-Poultry,Finisher,,0,Unoptimized,nutrient,Calcium,,,4,5"""
+Poultry,Starter,,0,Unsolved,ingredient,Corn,,,1,
+Poultry,Starter,,0,Unsolved,ingredient,Soybean Meal,,,0,
+Poultry,Starter,,0,Unsolved,ingredient,Oil,,,0,5
+Poultry,Starter,,0,Unsolved,ingredient,Limestone,,,0,
+Poultry,Starter,,0,Unsolved,ingredient,Meat Meal,,,0,10
+Poultry,Starter,,0,Unsolved,nutrient,Energy,,,3000,
+Poultry,Starter,,0,Unsolved,nutrient,Protein,,,20,
+Poultry,Starter,,0,Unsolved,nutrient,Fiber,,,0,
+Poultry,Starter,,0,Unsolved,nutrient,Calcium,,,4,5
+Poultry,Finisher,,0,Unsolved,ingredient,Corn,,,1,
+Poultry,Finisher,,0,Unsolved,ingredient,Soybean Meal,,,0,
+Poultry,Finisher,,0,Unsolved,ingredient,Oil,,,0,5
+Poultry,Finisher,,0,Unsolved,ingredient,Limestone,,,0,
+Poultry,Finisher,,0,Unsolved,ingredient,Meat Meal,,,0,10
+Poultry,Finisher,,0,Unsolved,nutrient,Energy,,,3000,
+Poultry,Finisher,,0,Unsolved,nutrient,Protein,,,20,
+Poultry,Finisher,,0,Unsolved,nutrient,Fiber,,,0,
+Poultry,Finisher,,0,Unsolved,nutrient,Calcium,,,4,5"""
 
         self.starter_csv = """library_name,formula_name,formula_code,formula_cost,formula_status,item_type,item_name,item_code,item_amount,item_minimum,item_maximum
-default,Starter,,0,Unoptimized,ingredient,Corn,,,1,
-default,Starter,,0,Unoptimized,ingredient,Soybean Meal,,,0,
-default,Starter,,0,Unoptimized,ingredient,Oil,,,0,5
-default,Starter,,0,Unoptimized,ingredient,Limestone,,,0,
-default,Starter,,0,Unoptimized,ingredient,Meat Meal,,,0,10
-default,Starter,,0,Unoptimized,nutrient,Energy,,,3000,
-default,Starter,,0,Unoptimized,nutrient,Protein,,,20,
-default,Starter,,0,Unoptimized,nutrient,Fiber,,,0,
-default,Starter,,0,Unoptimized,nutrient,Calcium,,,4,5"""
+default,Starter,,0,Unsolved,ingredient,Corn,,,1,
+default,Starter,,0,Unsolved,ingredient,Soybean Meal,,,0,
+default,Starter,,0,Unsolved,ingredient,Oil,,,0,5
+default,Starter,,0,Unsolved,ingredient,Limestone,,,0,
+default,Starter,,0,Unsolved,ingredient,Meat Meal,,,0,10
+default,Starter,,0,Unsolved,nutrient,Energy,,,3000,
+default,Starter,,0,Unsolved,nutrient,Protein,,,20,
+default,Starter,,0,Unsolved,nutrient,Fiber,,,0,
+default,Starter,,0,Unsolved,nutrient,Calcium,,,4,5"""
 
         self.starter = Formula(name='Starter', batch_size=100)
         self.starter.add_ingredient(corn, minimum=1)
