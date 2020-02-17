@@ -1,3 +1,3 @@
-__version__ = '0.1.3'
-__author__ = 'Brennen Herbruck'
-__email__ = 'brennen.herbruck@gmail.com'
+VERSION = '0.1.4'
+AUTHOR = 'Brennen Herbruck'
+EMAIL = 'brennen.herbruck@gmail.com'
