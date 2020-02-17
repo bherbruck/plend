@@ -221,6 +221,8 @@ class Formula():
         TODO:
             Refactor optimization process
             Add unit to csv output
+            Add items property (ingredients and nutrients in one list)
+            Handle overlapping ingredients/nutriends
         """
         self.name = name
         self.code = code
