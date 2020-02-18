@@ -1,0 +1,30 @@
+#title: plend_uml_full
+#font: Cascadia Code
+#.internal: dashed
+
+
+[Nutrient|name: str; code: str; unit: str]
+
+[<frame>Nutrients|
+[<internal>FormulaNutrient|amount: float; minimum: float;
+ maximum: float; nutrient: Nutrient; formula: Formula]]
+
+[<frame>Ingredients|
+[<internal>IngredientNutrient|amount: float; nutrient: Nutrient]
+[Ingredient|name: str; code: str; unit: str; cost: float]
+[<internal>FormulaIngredient|amount: float; minimum: float;
+ maximum: float; ingredient: Ingredient; formula: Formula]
+[IngredientNutrient]-+[Ingredient]
+[Ingredient]-[FormulaIngredient]]
+
+[Formula|name: str; code: str; unit: str; cost: float;
+ status: float; batch_size: float|add_nutrient(); add_ingredient();
+ derive_from();optimize()]
+[FormulaLibrary]
+
+[Nutrient]-[Ingredients]
+[Nutrient]-[Nutrients]
+[Ingredients]o-+[Formula]
+[Nutrients]o-+[Formula]
+[Formula]-+[FormulaLibrary]
+

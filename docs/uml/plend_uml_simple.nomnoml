@@ -1,0 +1,25 @@
+#title: plend_uml_simple
+#font: Cascadia Code
+#.internal: dashed
+
+
+[Nutrient]
+
+[<frame>Nutrients|
+[<internal>FormulaNutrient]]
+
+[<frame>Ingredients|
+[<internal>IngredientNutrient]
+[<internal>FormulaIngredient]
+[IngredientNutrient]-+[Ingredient]
+[Ingredient]-[FormulaIngredient]]
+
+[Formula]
+[FormulaLibrary]
+
+[Nutrient]-[Ingredients]
+[Nutrient]-[Nutrients]
+[Ingredients]o-+[Formula]
+[Nutrients]o-+[Formula]
+[Formula]-+[FormulaLibrary]
+

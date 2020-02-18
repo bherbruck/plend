@@ -1,0 +1,103 @@
+<svg version="1.1" baseProfile="full" width="530" height="925" viewbox="0 0 530 925" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Cascadia Code', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+  <title >plend_uml_full</title>
+  <desc >#title: plend_uml_full
+#font: Cascadia Code
+#.internal: dashed
+
+
+[Nutrient|name: str; code: str; unit: str]
+
+[&lt;frame&gt;Nutrients|
+[&lt;internal&gt;FormulaNutrient|amount: float; minimum: float;
+ maximum: float; nutrient: Nutrient; formula: Formula]]
+
+[&lt;frame&gt;Ingredients|
+[&lt;internal&gt;IngredientNutrient|amount: float; nutrient: Nutrient]
+[Ingredient|name: str; code: str; unit: str; cost: float]
+[&lt;internal&gt;FormulaIngredient|amount: float; minimum: float;
+ maximum: float; ingredient: Ingredient; formula: Formula]
+[IngredientNutrient]-+[Ingredient]
+[Ingredient]-[FormulaIngredient]]
+
+[Formula|name: str; code: str; unit: str; cost: float;
+ status: float; batch_size: float|add_nutrient(); add_ingredient();
+ derive_from();optimize()]
+[FormulaLibrary]
+
+[Nutrient]-[Ingredients]
+[Nutrient]-[Nutrients]
+[Ingredients]o-+[Formula]
+[Nutrients]o-+[Formula]
+[Formula]-+[FormulaLibrary]
+
+</desc>
+  <path d="M224 84.3 L139 125.5 L139 145.5 L139 145.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M326 84.3 L411 125.5 L411 277.5 L411 277.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M139 588.5 L139 608.5 L186 652.2 L186 652.2 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M175.5 649.8 L172.3 639.5 L182.8 642 L186 652.2 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M144.3 597.8 L139 607.2 L133.7 597.8 L139 588.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M411 456.5 L411 608.5 L364 652.2 L364 652.2 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M367.2 642 L377.7 639.5 L374.5 649.8 L364 652.2 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M416.3 465.8 L411 475.2 L405.7 465.8 L411 456.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M275 841.5 L275 861.5 L275 881.5 L275 881.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M269.7 872.2 L275 862.8 L280.3 872.2 L275 881.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <rect x="186.5" y="628.5" height="213" width="178" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="275.5" y="650" style="fill: #33322E;text-anchor: middle;">Formula</text>
+  <path d="M186.5 659.5 L364.5 659.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="194.5" y="681" style="fill: #33322E;font-weight:normal;">name: str</text>
+  <text x="194.5" y="696" style="fill: #33322E;font-weight:normal;">code: str</text>
+  <text x="194.5" y="711" style="fill: #33322E;font-weight:normal;">unit: str</text>
+  <text x="194.5" y="726" style="fill: #33322E;font-weight:normal;">cost: float</text>
+  <text x="194.5" y="741" style="fill: #33322E;font-weight:normal;">status: float</text>
+  <text x="194.5" y="756" style="fill: #33322E;font-weight:normal;">batch_size: float</text>
+  <path d="M186.5 765.5 L364.5 765.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="194.5" y="787" style="fill: #33322E;font-weight:normal;">add_nutrient()</text>
+  <text x="194.5" y="802" style="fill: #33322E;font-weight:normal;">add_ingredient()</text>
+  <text x="194.5" y="817" style="fill: #33322E;font-weight:normal;">derive_from()</text>
+  <text x="194.5" y="832" style="fill: #33322E;font-weight:normal;">optimize()</text>
+  <rect x="224.5" y="13.5" height="92" width="102" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="275.5" y="35" style="fill: #33322E;text-anchor: middle;">Nutrient</text>
+  <path d="M224.5 44.5 L326.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="232.5" y="66" style="fill: #33322E;font-weight:normal;">name: str</text>
+  <text x="232.5" y="81" style="fill: #33322E;font-weight:normal;">code: str</text>
+  <text x="232.5" y="96" style="fill: #33322E;font-weight:normal;">unit: str</text>
+  <rect x="304.5" y="277.5" height="179" width="213" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="312.5" y="299" style="fill: #33322E;font-weight:normal;">Nutrients</text>
+  <path d="M304.5 308.5 L398 308.5 L413.5 293 L413.5 277.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="317.5" y="321.5" height="122" width="187" style="stroke:#33322E;fill:#fdf6e3;stroke-dasharray:6 6;"></rect>
+  <text x="411" y="343" style="fill: #33322E;font-weight:normal;text-anchor: middle;">FormulaNutrient</text>
+  <path d="M317.5 352.5 L504.5 352.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="325.5" y="374" style="fill: #33322E;font-weight:normal;">amount: float</text>
+  <text x="325.5" y="389" style="fill: #33322E;font-weight:normal;">minimum: float</text>
+  <text x="325.5" y="404" style="fill: #33322E;font-weight:normal;">maximum: float</text>
+  <text x="325.5" y="419" style="fill: #33322E;font-weight:normal;">nutrient: Nutrient</text>
+  <text x="325.5" y="434" style="fill: #33322E;font-weight:normal;">formula: Formula</text>
+  <rect x="13.5" y="145.5" height="443" width="251" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="21.5" y="167" style="fill: #33322E;font-weight:normal;">Ingredients</text>
+  <path d="M13.5 176.5 L126 176.5 L141.5 161 L141.5 145.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M139 266.5 L139 286.5 L139 306.5 L139 306.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M133.7 297.2 L139 287.8 L144.3 297.2 L139 306.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M139 413.5 L139 433.5 L139 453.5 L139 453.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="45.5" y="189.5" height="77" width="187" style="stroke:#33322E;fill:#fdf6e3;stroke-dasharray:6 6;"></rect>
+  <text x="139" y="211" style="fill: #33322E;font-weight:normal;text-anchor: middle;">IngredientNutrient</text>
+  <path d="M45.5 220.5 L232.5 220.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="53.5" y="242" style="fill: #33322E;font-weight:normal;">amount: float</text>
+  <text x="53.5" y="257" style="fill: #33322E;font-weight:normal;">nutrient: Nutrient</text>
+  <rect x="78.5" y="306.5" height="107" width="121" style="stroke:#33322E;fill:#fdf6e3;stroke-dasharray:none;"></rect>
+  <text x="139" y="328" style="fill: #33322E;text-anchor: middle;">Ingredient</text>
+  <path d="M78.5 337.5 L199.5 337.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="86.5" y="359" style="fill: #33322E;font-weight:normal;">name: str</text>
+  <text x="86.5" y="374" style="fill: #33322E;font-weight:normal;">code: str</text>
+  <text x="86.5" y="389" style="fill: #33322E;font-weight:normal;">unit: str</text>
+  <text x="86.5" y="404" style="fill: #33322E;font-weight:normal;">cost: float</text>
+  <rect x="26.5" y="453.5" height="122" width="225" style="stroke:#33322E;fill:#fdf6e3;stroke-dasharray:6 6;"></rect>
+  <text x="139" y="475" style="fill: #33322E;font-weight:normal;text-anchor: middle;">FormulaIngredient</text>
+  <path d="M26.5 484.5 L251.5 484.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="34.5" y="506" style="fill: #33322E;font-weight:normal;">amount: float</text>
+  <text x="34.5" y="521" style="fill: #33322E;font-weight:normal;">minimum: float</text>
+  <text x="34.5" y="536" style="fill: #33322E;font-weight:normal;">maximum: float</text>
+  <text x="34.5" y="551" style="fill: #33322E;font-weight:normal;">ingredient: Ingredient</text>
+  <text x="34.5" y="566" style="fill: #33322E;font-weight:normal;">formula: Formula</text>
+  <rect x="200.5" y="881.5" height="31" width="149" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="275" y="903" style="fill: #33322E;text-anchor: middle;">FormulaLibrary</text>
+</svg>
