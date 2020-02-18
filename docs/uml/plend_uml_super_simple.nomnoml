@@ -1,0 +1,9 @@
+#title: plend_uml_super_simple
+#font: Cascadia Code
+#.internal: dashed
+
+[Nutrient]-[Ingredient]
+[Ingredient]-[Formula]
+[Nutrient]-[Formula]
+[Formula]-[FormulaLibrary]
+

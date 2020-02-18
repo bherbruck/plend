@@ -1,0 +1,62 @@
+<svg version="1.1" baseProfile="full" width="464" height="469" viewbox="0 0 464 469" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Cascadia Code', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+  <title >plend_uml_simple</title>
+  <desc >#title: plend_uml_simple
+#font: Cascadia Code
+#.internal: dashed
+
+
+[Nutrient]
+
+[&lt;frame&gt;Nutrients|
+[&lt;internal&gt;FormulaNutrient]]
+
+[&lt;frame&gt;Ingredients|
+[&lt;internal&gt;IngredientNutrient]
+[&lt;internal&gt;FormulaIngredient]
+[IngredientNutrient]-+[Ingredient]
+[Ingredient]-[FormulaIngredient]]
+
+[Formula]
+[FormulaLibrary]
+
+[Nutrient]-[Ingredients]
+[Nutrient]-[Nutrients]
+[Ingredients]o-+[Formula]
+[Nutrients]o-+[Formula]
+[Formula]-+[FormulaLibrary]
+
+</desc>
+  <path d="M193.5 42.7 L120 64.5 L120 84.5 L120 84.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M285.5 42.7 L359 64.5 L359 155.5 L359 155.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M120 314.5 L120 334.5 L198 357.7 L198 357.7 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M187.5 360.1 L180.1 352.4 L190.6 349.9 L198 357.7 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M125.3 323.8 L120 333.2 L114.7 323.8 L120 314.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M359 243.5 L359 334.5 L281 357.7 L281 357.7 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M288.4 349.9 L298.9 352.4 L291.5 360.1 L281 357.7 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M364.3 252.8 L359 262.2 L353.7 252.8 L359 243.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M239.5 385.5 L239.5 405.5 L239.5 425.5 L239.5 425.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M234.2 416.2 L239.5 406.8 L244.8 416.2 L239.5 425.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <rect x="266.5" y="155.5" height="88" width="185" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="274.5" y="177" style="fill: #33322E;font-weight:normal;">Nutrients</text>
+  <path d="M266.5 186.5 L360 186.5 L375.5 171 L375.5 155.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="279.5" y="199.5" height="31" width="159" style="stroke:#33322E;fill:#fdf6e3;stroke-dasharray:6 6;"></rect>
+  <text x="359" y="221" style="fill: #33322E;font-weight:normal;text-anchor: middle;">FormulaNutrient</text>
+  <rect x="13.5" y="84.5" height="230" width="213" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="21.5" y="106" style="fill: #33322E;font-weight:normal;">Ingredients</text>
+  <path d="M13.5 115.5 L126 115.5 L141.5 100 L141.5 84.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M120 159.5 L120 179.5 L120 199.5 L120 199.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M114.7 190.2 L120 180.8 L125.3 190.2 L120 199.5 Z" style="stroke:#33322E;fill:#33322E;stroke-dasharray:none;"></path>
+  <path d="M120 230.5 L120 250.5 L120 270.5 L120 270.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="26.5" y="128.5" height="31" width="187" style="stroke:#33322E;fill:#fdf6e3;stroke-dasharray:6 6;"></rect>
+  <text x="120" y="150" style="fill: #33322E;font-weight:normal;text-anchor: middle;">IngredientNutrient</text>
+  <rect x="31.5" y="270.5" height="31" width="178" style="stroke:#33322E;fill:#fdf6e3;stroke-dasharray:6 6;"></rect>
+  <text x="120.5" y="292" style="fill: #33322E;font-weight:normal;text-anchor: middle;">FormulaIngredient</text>
+  <rect x="64.5" y="199.5" height="31" width="111" style="stroke:#33322E;fill:#fdf6e3;stroke-dasharray:none;"></rect>
+  <text x="120" y="221" style="fill: #33322E;text-anchor: middle;">Ingredient</text>
+  <rect x="193.5" y="13.5" height="31" width="92" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="239.5" y="35" style="fill: #33322E;text-anchor: middle;">Nutrient</text>
+  <rect x="198.5" y="354.5" height="31" width="83" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="240" y="376" style="fill: #33322E;text-anchor: middle;">Formula</text>
+  <rect x="165.5" y="425.5" height="31" width="149" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="240" y="447" style="fill: #33322E;text-anchor: middle;">FormulaLibrary</text>
+</svg>

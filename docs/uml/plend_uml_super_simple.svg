@@ -1,0 +1,25 @@
+<svg version="1.1" baseProfile="full" width="203.75" height="270" viewbox="0 0 203.75 270" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Cascadia Code', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+  <title >plend_uml_super_simple</title>
+  <desc >#title: plend_uml_super_simple
+#font: Cascadia Code
+#.internal: dashed
+
+[Nutrient]-[Ingredient]
+[Ingredient]-[Formula]
+[Nutrient]-[Formula]
+[Formula]-[FormulaLibrary]
+
+</desc>
+  <path d="M95.9 44.5 L69 64.5 L69 84.5 L69 84.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M69 115.5 L69 135.5 L95.9 155.5 L95.9 155.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M137.6 44.5 L164.5 64.5 L164.5 100 L164.5 100 L164.5 135.5 L164.5 135.5 L137.6 155.5 L137.6 155.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M116.8 186.5 L116.8 206.5 L116.8 226.5 L116.8 226.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="70.5" y="13.5" height="31" width="92" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="116.5" y="35" style="fill: #33322E;text-anchor: middle;">Nutrient</text>
+  <rect x="13.5" y="84.5" height="31" width="111" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="69" y="106" style="fill: #33322E;text-anchor: middle;">Ingredient</text>
+  <rect x="75.5" y="155.5" height="31" width="83" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="117" y="177" style="fill: #33322E;text-anchor: middle;">Formula</text>
+  <rect x="42.5" y="226.5" height="31" width="149" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="117" y="248" style="fill: #33322E;text-anchor: middle;">FormulaLibrary</text>
+</svg>
