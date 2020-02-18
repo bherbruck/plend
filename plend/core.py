@@ -247,7 +247,8 @@ class Formula():
             maximum (float, optional): maximum amount to use in the formula.
                 Defaults to None.
         """
-        bi = next((i for i in self.ingredients if i.ingredient == ingredient), None)
+        bi = next((i for i in self.ingredients if i.ingredient == ingredient),
+                  None)
         # update the nutrient if it already exists
         if bi:
             bi.amount = amount
