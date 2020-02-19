@@ -1,3 +1,4 @@
+import copy
 import csv
 import io
 import json
@@ -301,8 +302,7 @@ class Formula():
             nutrient (dict): formatted {Ingredient: (minimum, maximum)}
         """
         for nutrient, (minimum, maximum) in nutrient_dict.items():
-            self.add_nutrient(nutrient, minimum=minimum,
-                              maximum=maximum)
+            self.add_nutrient(nutrient, minimum=minimum, maximum=maximum)
 
     def derive_from(self, formula):
         """Copy the ingredients and nutrients from another formula.
@@ -311,22 +311,12 @@ class Formula():
         Args:
             formula (Formula): Formla to derive from.
         """
-        if len(self.ingredients) > 0:
-            ings = [fi
-                    for fi in formula.ingredients
-                    for si in self.ingredients
-                    if si.ingredient != fi.ingredient]
-        else:
-            ings = formula.ingredients
-        if len(self.nutrients) > 0:
-            nuts = [fn
-                    for fn in formula.nutrients
-                    for sn in self.nutrients
-                    if sn.name != fn.name]
-        else:
-            nuts = formula.nutrients
-        self.ingredients += ings
-        self.nutrients += nuts
+        for ing in formula.ingredients:
+            self.add_ingredient(ingredient=ing.ingredient, amount=ing.amount,
+                                minimum=ing.minimum, maximum=ing.maximum)
+        for nut in formula.nutrients:
+            self.add_nutrient(nutrient=nut.nutrient, amount=nut.amount,
+                              minimum=nut.minimum, maximum=nut.maximum)
 
     def create_problem(self):
         """Create the PuLP problem to be solved
