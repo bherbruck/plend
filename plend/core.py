@@ -67,7 +67,7 @@ class IngredientNutrient():
 
 class Ingredient():
     def __init__(self, name, code=None, amount=None,
-                 cost=None, nutrients=None):
+                 cost=0, nutrients=None):
         """Create an Ingredient
 
         Args:
