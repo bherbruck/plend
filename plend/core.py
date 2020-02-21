@@ -65,6 +65,12 @@ class IngredientNutrient():
     def decode(self):
         pass
 
+    def __eq__(self, other):
+        return self.nutrient == other
+    
+    def __hash__(self):
+        return id(self)
+
 
 class Ingredient():
     def __init__(self, name, code=None, amount=None,
@@ -149,6 +155,12 @@ class FormulaNutrient():
 
     def decode(self):
         pass
+    
+    def __eq__(self, other):
+        return self.nutrient == other
+    
+    def __hash__(self):
+        return id(self)
 
 
 class FormulaIngredient():
@@ -239,6 +251,12 @@ class FormulaIngredient():
 
     def decode(self):
         pass
+    
+    def __eq__(self, other):
+        return self.ingredient == other
+    
+    def __hash__(self):
+        return id(self)
 
 
 class Formula():
