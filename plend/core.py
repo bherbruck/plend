@@ -475,7 +475,7 @@ class FromulaSolver():
         if not formula:
             formula = self.formula
         if not formula.problem:
-            self.create_problem()
+            self.create_problem(formula)
         formula.problem.solve()
         formula.status = pulp.LpStatus[formula.problem.status]
 
