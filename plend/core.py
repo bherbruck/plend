@@ -111,7 +111,7 @@ class Ingredient():
         pass
 
 
-class BoundNutrient():
+class FormulaNutrient():
     def __init__(self, nutrient, amount=None, minimum=0,
                  maximum=None, formula=None):
         """Nutrient with constraints and amount
@@ -149,7 +149,7 @@ class BoundNutrient():
         pass
 
 
-class BoundIngredient():
+class FormulaIngredient():
     def __init__(self, ingredient, amount=None, minimum=0,
                  maximum=None, formula=None):
         """Ingredient with constraints and amount
@@ -240,7 +240,7 @@ class Formula():
         """Add an ingredient with bounds to the formula, update if it exists
 
         Args:
-            ingredient (BoundIngredient): ingredient to add
+            ingredient (FormulaIngredient): ingredient to add
             amount (float, optional): amount of the ingredient.
                 Defaults to None.
             minimum (float, optional): minimum amount to use in the formula.
@@ -258,7 +258,7 @@ class Formula():
             bi.formula = self
         # add a new nutrient if it does not exist
         else:
-            self.ingredients.append(BoundIngredient(
+            self.ingredients.append(FormulaIngredient(
                 ingredient, amount, minimum, maximum, formula=self))
 
     def add_ingredients(self, ingredient_dict):
@@ -275,7 +275,7 @@ class Formula():
         """Add an nutrient with bounds to the formula, update if it exists
 
         Args:
-            nutrient (BoundNutrient): nutrient to add
+            nutrient (FormulaNutrient): nutrient to add
             amount (float, optional): amount of the nutrient Defaults to None.
             minimum (float, optional): minimum amount to use in the formula.
                 Defaults to 0.
@@ -292,7 +292,7 @@ class Formula():
             bn.formula = self
         # add a new nutrient if it does not exist
         else:
-            self.nutrients.append(BoundNutrient(
+            self.nutrients.append(FormulaNutrient(
                 nutrient, amount, minimum, maximum, formula=self))
 
     def add_nutrients(self, nutrient_dict):
