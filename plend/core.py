@@ -238,6 +238,7 @@ class Formula():
         self.variables = {}
         self.problem = None
         self.status = 'Unsolved'
+        self.solver = FromulaSolver(self)
 
     def add_ingredient(self, ingredient, amount=None, minimum=0, maximum=None):
         """Add an ingredient with bounds to the formula, update if it exists
@@ -321,11 +322,20 @@ class Formula():
             self.add_nutrient(nutrient=nut.nutrient, amount=nut.amount,
                               minimum=nut.minimum, maximum=nut.maximum)
 
+    def create_problem(self):
+        """Create the PuLP problem to be solved
+        """
+        self.solver.create_problem()
+        
+    def solve_problem(self):
+        """Solve the problem
+        """
+        self.solver.solve_problem()
+
     def optimize(self):
         """Optimize the formula by creating and solving the formula problem
         """
-        solver = FromulaSolver(self)
-        solver.optimize()
+        self.solver.optimize()
 
     def show_problem(self):
         """Prints the problem's function
@@ -465,7 +475,7 @@ class FromulaSolver():
         if not formula:
             formula = self.formula
         if not formula.problem:
-            formula.create_problem()
+            self.create_problem()
         formula.problem.solve()
         formula.status = pulp.LpStatus[formula.problem.status]
 
@@ -488,8 +498,8 @@ class FromulaSolver():
         """
         if not formula:
             formula = self.formula
-        formula.create_problem()
-        formula.solve_problem()
+        self.create_problem(formula)
+        self.solve_problem(formula)
 
 
 class FormulaLibrary():
