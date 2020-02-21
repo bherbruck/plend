@@ -74,6 +74,11 @@ default,Starter,,0,Unsolved,nutrient,Calcium,,,4,5"""
     def test_Formula_to_csv(self):
         self.compare_csv(self.starter_out.splitlines(),
                          self.starter_csv.splitlines())
+    
+    def test_Formula_methods(self):
+        self.starter.create_problem()
+        self.starter.solve_problem()
+        self.starter.optimize()
 
     def compare_csv(self, csv1, csv2):
         for line in [(x, y) for x, y in zip(csv1, csv2)]:
