@@ -196,16 +196,46 @@ class FormulaIngredient():
             return None
 
     @property
+    def batch_size(self):
+        if self.formula and self.formula.batch_size and self.amount:
+            return self.formula.batch_size
+        else:
+            return None
+
+    @property
+    def cost_per_batch(self):
+        if self.percent and self.cost:
+            return self.percent * self.cost
+        else:
+            return None
+
+    @property
     def unit(self):
         if self.formula:
             return self.formula.unit
 
+    def get_contribution(self, nutrient):
+        """Get the nutrient contribution of the Ingredient to its Formula
+
+        Args:
+            nutrient (Nutrient): nutrient to get contribution
+
+        Returns:
+            contribution (float)
+        """
+        if self.percent:
+            nut = next((n for n in self.nutrients if n.nutrient == nutrient),
+                        None)
+            if nut:
+                return self.percent * nut.amount
+            else:
+                return None
+        else:
+            return None
+
     def encode(self):
-        return {'name': self.name,
-                'code': self.code,
-                'amount': self.amount,
-                'minimum': self.minimum,
-                'maximum': self.maximum}
+        encoded_items = ['name', 'code', 'amount', 'minimum', 'maximum']
+        return {k: v for k, v in self.__dict__.items() if k in encoded_items}
 
     def decode(self):
         pass
@@ -326,7 +356,7 @@ class Formula():
         """Create the PuLP problem to be solved
         """
         self.solver.create_problem()
-        
+
     def solve_problem(self):
         """Solve the problem
         """
@@ -358,8 +388,9 @@ class Formula():
         Returns:
             dict: json dict representation
         """
-        exclude = ['problem']
-        return {k: v for k, v in self.__dict__.items() if k not in exclude}
+        encoded_items = ['name', 'code', 'batch_size', 'cost',
+                         'unit', 'ingredients', 'nutrients']
+        return {k: v for k, v in self.__dict__.items() if k in encoded_items}
 
     def decode(self):
         pass
@@ -422,10 +453,11 @@ class Formula():
             file.write(self.to_csv(
                 library_name=library_name, write_header=True))
 
+
 class FromulaSolver():
     def __init__(self, formula=None):
         self.formula = formula
-    
+
     def create_problem(self, formula=None):
         """Create the PuLP problem to be solved
         """
