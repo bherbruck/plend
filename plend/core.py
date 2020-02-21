@@ -41,6 +41,7 @@ class Nutrient():
 class IngredientNutrient():
     def __init__(self, nutrient, amount=None):
         """Nutrient with amount for use in an ingredient
+        One-to-one relationship with Ingredient
 
         Args:
             nutrient (Nutrient): nutrient to link
@@ -115,6 +116,7 @@ class FormulaNutrient():
     def __init__(self, nutrient, amount=None, minimum=0,
                  maximum=None, formula=None):
         """Nutrient with constraints and amount
+        One-to-one relationship with Nutrient
 
         Args:
             nutrient (Nutrient): nutrient
@@ -153,6 +155,7 @@ class FormulaIngredient():
     def __init__(self, ingredient, amount=None, minimum=0,
                  maximum=None, formula=None):
         """Ingredient with constraints and amount
+        One-to-one relationship with Ingredient
 
         Args:
             ingredient (Ingredient): ingredient
@@ -318,74 +321,11 @@ class Formula():
             self.add_nutrient(nutrient=nut.nutrient, amount=nut.amount,
                               minimum=nut.minimum, maximum=nut.maximum)
 
-    def create_problem(self):
-        """Create the PuLP problem to be solved
-        """
-        # create problem variables with bounds associated to ingredients
-        variables = {i: pulp.LpVariable(name=i.name,
-                                        lowBound=i.minimum,
-                                        upBound=i.maximum)
-                     for i in self.ingredients}
-
-        prob = pulp.LpProblem(self.name, pulp.LpMinimize)
-
-        # minimize cost objective function
-        prob += pulp.lpSum([variables[i] * i.cost
-                            for i in self.ingredients
-                            if i.cost])
-        # total function (uses ingredient bounds from variables)
-        prob += pulp.lpSum([variables[i]
-                            for i in self.ingredients]) \
-            == self.batch_size, 'total'
-
-        # nutrient bounds
-        for nutrient in self.nutrients:
-            # minimum
-            if nutrient.minimum:
-                minimum = pulp.lpSum([n.amount * variables[i]
-                                      for i in self.ingredients
-                                      for n in i.nutrients
-                                      if n.name == nutrient.name])
-                prob += minimum / self.batch_size \
-                    >= nutrient.minimum, f'min_{nutrient.name}'
-            # maximum
-            if nutrient.maximum:
-                maximum = pulp.lpSum([n.amount * variables[i]
-                                      for i in self.ingredients
-                                      for n in i.nutrients
-                                      if n.name == nutrient.name])
-                prob += maximum / self.batch_size \
-                    <= nutrient.maximum, f'max_{nutrient.name}'
-        self.variables = variables
-        self.problem = prob
-
-    def solve_problem(self):
-        """Solve the problem
-        """
-        if not self.problem:
-            self.create_problem()
-        self.problem.solve()
-        self.status = pulp.LpStatus[self.problem.status]
-
-        # set ingredient amounts from problem output
-        for ingredient, variable in self.variables.items():
-            ingredient.amount = variable.varValue
-            self.cost += ingredient.cost * \
-                (ingredient.amount / self.batch_size)
-
-        # set nutrient amounts from problem output
-        for nutrient in self.nutrients:
-            nutrient.amount = sum([i.amount * n.amount
-                                   for i in self.ingredients
-                                   for n in i.nutrients
-                                   if n.name == nutrient.name]) \
-                / self.batch_size
-
     def optimize(self):
         """Optimize the formula by creating and solving the formula problem
         """
-        self.create_problem()
-        self.solve_problem()
+        solver = FromulaSolver(self)
+        solver.optimize()
 
     def show_problem(self):
         """Prints the problem's function
@@ -471,6 +411,85 @@ class Formula():
         with open(filename, 'w', newline='') as file:
             file.write(self.to_csv(
                 library_name=library_name, write_header=True))
+
+class FromulaSolver():
+    def __init__(self, formula=None):
+        self.formula = formula
+    
+    def create_problem(self, formula=None):
+        """Create the PuLP problem to be solved
+        """
+        if not formula:
+            formula = self.formula
+        # create problem variables with bounds associated to ingredients
+        variables = {i: pulp.LpVariable(name=i.name,
+                                        lowBound=i.minimum,
+                                        upBound=i.maximum)
+                     for i in formula.ingredients}
+
+        prob = pulp.LpProblem(formula.name, pulp.LpMinimize)
+
+        # minimize cost objective function
+        prob += pulp.lpSum([variables[i] * i.cost
+                            for i in formula.ingredients
+                            if i.cost])
+        # total function (uses ingredient bounds from variables)
+        prob += pulp.lpSum([variables[i]
+                            for i in formula.ingredients]) \
+            == formula.batch_size, 'total'
+
+        # nutrient bounds
+        for nutrient in formula.nutrients:
+            # minimum
+            if nutrient.minimum:
+                minimum = pulp.lpSum([n.amount * variables[i]
+                                      for i in formula.ingredients
+                                      for n in i.nutrients
+                                      if n.name == nutrient.name])
+                prob += minimum / formula.batch_size \
+                    >= nutrient.minimum, f'min_{nutrient.name}'
+            # maximum
+            if nutrient.maximum:
+                maximum = pulp.lpSum([n.amount * variables[i]
+                                      for i in formula.ingredients
+                                      for n in i.nutrients
+                                      if n.name == nutrient.name])
+                prob += maximum / formula.batch_size \
+                    <= nutrient.maximum, f'max_{nutrient.name}'
+        formula.variables = variables
+        formula.problem = prob
+
+    def solve_problem(self, formula=None):
+        """Solve the problem
+        """
+        if not formula:
+            formula = self.formula
+        if not formula.problem:
+            formula.create_problem()
+        formula.problem.solve()
+        formula.status = pulp.LpStatus[formula.problem.status]
+
+        # set ingredient amounts from problem output
+        for ingredient, variable in formula.variables.items():
+            ingredient.amount = variable.varValue
+            formula.cost += ingredient.cost * \
+                (ingredient.amount / formula.batch_size)
+
+        # set nutrient amounts from problem output
+        for nutrient in formula.nutrients:
+            nutrient.amount = sum([i.amount * n.amount
+                                   for i in formula.ingredients
+                                   for n in i.nutrients
+                                   if n.name == nutrient.name]) \
+                / formula.batch_size
+
+    def optimize(self, formula=None):
+        """Optimize the formula by creating and solving the formula problem
+        """
+        if not formula:
+            formula = self.formula
+        formula.create_problem()
+        formula.solve_problem()
 
 
 class FormulaLibrary():
