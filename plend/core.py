@@ -479,7 +479,7 @@ class FromulaSolver():
     def create_problem(self, formula=None):
         """Create the PuLP problem to be solved
         """
-        if not formula:
+        if formula is None:
             formula = self.formula
         # create problem variables with bounds associated to ingredients
         variables = {i: pulp.LpVariable(name=i.name,
@@ -522,9 +522,9 @@ class FromulaSolver():
     def solve_problem(self, formula=None):
         """Solve the problem
         """
-        if not formula:
+        if formula is None:
             formula = self.formula
-        if not formula.problem:
+        if formula.problem is None:
             self.create_problem(formula)
         formula.problem.solve()
         formula.status = pulp.LpStatus[formula.problem.status]
@@ -546,7 +546,7 @@ class FromulaSolver():
     def optimize(self, formula=None):
         """Optimize the formula by creating and solving the formula problem
         """
-        if not formula:
+        if formula is None:
             formula = self.formula
         self.create_problem(formula)
         self.solve_problem(formula)
