@@ -147,11 +147,8 @@ class FormulaNutrient():
         return self.nutrient.code
 
     def encode(self):
-        return {'name': self.name,
-                'code': self.code,
-                'amount': self.amount,
-                'minimum': self.minimum,
-                'maximum': self.maximum}
+        encoded_items = ['name', 'code', 'amount', 'minimum', 'maximum']
+        return {k: v for k, v in self.__dict__.items() if k in encoded_items}
 
     def decode(self):
         pass
