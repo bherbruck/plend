@@ -1,12 +1,11 @@
 from setuptools import setup, find_packages
-from plend import constants
 
 
 setup(name='plend',
-      version=constants.VERSION,
+      version='0.1.4',
       description='Least Cost Formulation with Python',
-      author=constants.AUTHOR,
-      author_email=constants.EMAIL,
+      author='Brennen Herbruck',
+      author_email='brennen.herbruck@gmail.com',
       license='MIT',
       url='https://github.com/bherbruck/plend',
       install_requires=['PuLP==2.0'],
