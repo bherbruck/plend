@@ -90,7 +90,7 @@ class Ingredient():
         self.amount = amount
         self.cost = cost
         self.nutrients = []
-        if nutrients:
+        if nutrients is not None:
             self.add_nutrients(nutrients)
 
     def add_nutrient(self, nutrient, amount):
@@ -289,7 +289,7 @@ class Formula():
         self.variables = {}
         self.problem = None
         self.status = 'Unsolved'
-        self.solver = FromulaSolver(self)
+        self.solver = FormulaSolver(self)
 
     def add_ingredient(self, ingredient, amount=None, minimum=0, maximum=None):
         """Add an ingredient with bounds to the formula, update if it exists
@@ -475,7 +475,7 @@ class Formula():
                 library_name=library_name, write_header=True))
 
 
-class FromulaSolver():
+class FormulaSolver():
     def __init__(self, formula=None):
         self.formula = formula
 
