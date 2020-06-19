@@ -3,6 +3,7 @@ import csv
 import io
 import json
 
+import jsonref
 import pulp
 
 
@@ -67,7 +68,7 @@ class IngredientNutrient:
 
     def __eq__(self, other):
         return self.nutrient == other
-    
+
     def __hash__(self):
         return id(self)
 
@@ -155,10 +156,10 @@ class FormulaNutrient:
 
     def decode(self):
         pass
-    
+
     def __eq__(self, other):
         return self.nutrient == other
-    
+
     def __hash__(self):
         return id(self)
 
@@ -237,7 +238,7 @@ class FormulaIngredient:
         """
         if self.percent:
             nut = next((n for n in self.nutrients if n.nutrient == nutrient),
-                        None)
+                       None)
             if nut:
                 return self.percent * nut.amount
             else:
@@ -254,10 +255,10 @@ class FormulaIngredient:
 
     def decode(self):
         pass
-    
+
     def __eq__(self, other):
         return self.ingredient == other
-    
+
     def __hash__(self):
         return id(self)
 
@@ -606,6 +607,15 @@ class FormulaLibrary:
     def to_json(self):
         return json.dumps(self, default=lambda o: o.encode(), indent=4)
 
+    def save_json(self, path):
+        with open(path, 'r') as file:
+            file.write(self.to_json())
+
+    @staticmethod
+    def from_json(self, path):
+        with open(path, 'r') as file:
+            data = json.load(fil)
+
     def to_csv(self):
         """Return a csv representation of the FormulaLibrary
 
@@ -622,12 +632,12 @@ class FormulaLibrary:
                                          write_header=False)
         return csv_string
 
-    def save_csv(self, filename):
+    def save_csv(self, path):
         """Save the FormulaLibrary as a csv,
         overwrites any existing file with the same name
 
         Args:
             filename (str): name of the file
         """
-        with open(filename, 'w', newline='') as file:
+        with open(path, 'w', newline='') as file:
             file.write(self.to_csv())
