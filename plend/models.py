@@ -19,7 +19,7 @@ COLUMN_HEADERS = ['library_name',
                   'item_maximum']
 
 
-class Nutrient():
+class Nutrient:
     def __init__(self, name, code=None, unit=None):
         """Create a Nutrient
 
@@ -38,7 +38,7 @@ class Nutrient():
         pass
 
 
-class IngredientNutrient():
+class IngredientNutrient:
     def __init__(self, nutrient, amount=None):
         """Nutrient with amount for use in an ingredient
         One-to-one relationship with Ingredient
@@ -72,7 +72,7 @@ class IngredientNutrient():
         return id(self)
 
 
-class Ingredient():
+class Ingredient:
     def __init__(self, name, code=None, amount=None,
                  cost=0, nutrients=None):
         """Create an Ingredient
@@ -118,7 +118,7 @@ class Ingredient():
         pass
 
 
-class FormulaNutrient():
+class FormulaNutrient:
     def __init__(self, nutrient, amount=None, minimum=0,
                  maximum=None, formula=None):
         """Nutrient with constraints and amount
@@ -163,7 +163,7 @@ class FormulaNutrient():
         return id(self)
 
 
-class FormulaIngredient():
+class FormulaIngredient:
     def __init__(self, ingredient, amount=None, minimum=0,
                  maximum=None, formula=None):
         """Ingredient with constraints and amount
@@ -262,7 +262,7 @@ class FormulaIngredient():
         return id(self)
 
 
-class Formula():
+class Formula:
     def __init__(self, name, code=None, batch_size=1, unit=None):
         """Create a Formula
 
@@ -475,7 +475,7 @@ class Formula():
                 library_name=library_name, write_header=True))
 
 
-class FormulaSolver():
+class FormulaSolver:
     def __init__(self, formula=None):
         self.formula = formula
 
@@ -555,7 +555,7 @@ class FormulaSolver():
         self.solve_problem(formula)
 
 
-class FormulaLibrary():
+class FormulaLibrary:
     """A library of nutrients, ingredients, and formulas
     """
 
