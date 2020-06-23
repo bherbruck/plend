@@ -640,3 +640,4 @@ class FormulaLibrary:
         """
         with open(path, 'w', newline='') as file:
             file.write(self.to_csv())
+
