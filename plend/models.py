@@ -612,8 +612,10 @@ class FormulaLibrary:
 
     @staticmethod
     def from_json(self, path):
+        # TODO
+        raise NotImplementedError
         with open(path, 'r') as file:
-            data = json.load(fil)
+            data = json.load(file)
 
     def to_csv(self):
         """Return a csv representation of the FormulaLibrary
