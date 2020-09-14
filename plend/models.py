@@ -578,7 +578,7 @@ class FormulaLibrary:
         self.formulas = []
 
     def add_nutrients(self, nutrients: List[Nutrient]):
-            self.nutrients += nutrients
+        self.nutrients += nutrients
 
     def add_ingredients(self, ingredients: List[Ingredient]):
         self.ingredients += ingredients
