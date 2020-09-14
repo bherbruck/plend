@@ -61,7 +61,7 @@ default,Starter,starter,0,Unsolved,nutrient,Calcium,calcium,,4,5"""
         self.finisher.add_nutrient(calcium, minimum=4, maximum=5)
 
         self.flib = FormulaLibrary(name='Poultry')
-        self.flib.add_formulas(self.starter, self.finisher)
+        self.flib.add_formulas([self.starter, self.finisher])
 
         self.starter_out = self.starter.to_csv()
         self.finisher_out = self.finisher.to_csv()

@@ -1,6 +1,7 @@
 import csv
 import io
 import json
+from typing import List, Dict, Any, Tuple
 
 import pulp
 from . import utils
@@ -32,8 +33,8 @@ class Item:
         self.name = name
         self.code = code or utils.clean_name(name)
 
-        def encode(self):
-            return self.__dict__
+    def encode(self) -> dict:
+        return vars(self)
 
 
 class Nutrient(Item):
@@ -50,9 +51,6 @@ class Nutrient(Item):
         self.code = code or utils.clean_name(name)
         self.unit = unit
 
-    def decode(self):
-        pass
-
 
 class IngredientNutrient:
     def __init__(self, nutrient: Nutrient, amount: float = None):
@@ -67,32 +65,26 @@ class IngredientNutrient:
         self.amount = amount
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.nutrient.name
 
     @property
-    def code(self):
+    def code(self) -> str:
         return self.nutrient.code
 
-    def encode(self):
+    def encode(self) -> Dict[str, Any]:
         return {'name': self.name,
                 'amount': self.amount}
 
-    def decode(self):
-        pass
-
-    def __eq__(self, other: object):
+    def __eq__(self, other: Nutrient) -> bool:
         return self.nutrient == other
-
-    def __hash__(self):
-        return id(self)
 
 
 class Ingredient(Item):
     item_type = 'ingredient'
 
     def __init__(self, name: str, code: str = None, amount: float = None,
-                 cost: float = 0, nutrients: list = None):
+                 cost: float = 0, nutrients: Dict[Nutrient, float] = None):
         """Create an Ingredient
 
         Args:
@@ -121,7 +113,7 @@ class Ingredient(Item):
         """
         self.nutrients.append(IngredientNutrient(nutrient, amount))
 
-    def add_nutrients(self, nutrients: dict):
+    def add_nutrients(self, nutrients: Dict[Nutrient, float]):
         """Add a dict of nutrients
 
         Args:
@@ -130,13 +122,10 @@ class Ingredient(Item):
         for nutrient, amount in nutrients.items():
             self.add_nutrient(nutrient, amount)
 
-    def decode(self):
-        pass
-
 
 class BoundItem:
     def __init__(self, item: Item, amount: float = None, minimum: float = 0,
-                 maximum: float = None, formula: object = None):
+                 maximum: float = None, formula: Any = None):
         self.item = item
         self.amount = amount
         self.minimum = minimum
@@ -144,39 +133,32 @@ class BoundItem:
         self.formula = formula
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.item.name
 
     @property
-    def code(self):
+    def code(self) -> str:
         return self.item.code
-    
+
     @property
-    def item_type(self):
+    def item_type(self) -> str:
         return self.item.item_type
 
-    @property
-    def to_dict(self):
-        return dict(vars(self), name=self.name, code=self.code)
-
-    def encode(self):
+    def encode(self) -> Dict[str, Any]:
         return {'item_name': self.name,
                 'item_code': self.code,
                 'item_amount': self.amount,
                 'item_minimum': self.minimum,
                 'item_maximum': self.maximum}
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         return self.item == other
-
-    def __hash__(self):
-        return id(self)
 
 
 class FormulaNutrient(BoundItem):
     def __init__(self, nutrient: Nutrient, amount: float = None,
                  minimum: float = 0,  maximum: float = None,
-                 formula: object = None):
+                 formula: Any = None):
         """Nutrient with constraints and amount
         One-to-one relationship with Nutrient
 
@@ -195,17 +177,14 @@ class FormulaNutrient(BoundItem):
         self.formula = formula
 
     @property
-    def nutrient(self):
+    def nutrient(self) -> Nutrient:
         return self.item
-
-    def decode(self):
-        pass
 
 
 class FormulaIngredient(BoundItem):
     def __init__(self, ingredient: Ingredient, amount: float = None,
                  minimum: float = 0, maximum: float = None,
-                 formula: object = None):
+                 formula: Any = None):
         """Ingredient with constraints and amount
         One-to-one relationship with Ingredient
 
@@ -225,44 +204,37 @@ class FormulaIngredient(BoundItem):
         self.formula = formula
 
     @property
-    def ingredient(self):
+    def ingredient(self) -> Ingredient:
         return self.item
 
     @property
-    def cost(self):
+    def cost(self) -> float:
         return self.ingredient.cost
 
     @property
-    def nutrients(self):
+    def nutrients(self) -> List[IngredientNutrient]:
         return self.ingredient.nutrients
 
     @property
-    def percent(self):
+    def percent(self) -> float:
         if self.formula and self.formula.batch_size and self.amount:
             return float(self.amount) / float(self.formula.batch_size)
         else:
             return None
 
     @property
-    def batch_size(self):
+    def batch_size(self) -> float:
         if self.formula and self.formula.batch_size and self.amount:
             return self.formula.batch_size
         else:
             return None
 
     @property
-    def cost_per_batch(self):
-        if self.percent and self.cost:
-            return self.percent * self.cost
-        else:
-            return None
-
-    @property
-    def unit(self):
+    def unit(self) -> str:
         if self.formula:
             return self.formula.unit
 
-    def get_contribution(self, nutrient: Nutrient):
+    def get_contribution(self, nutrient: Nutrient) -> float:
         """Get the nutrient contribution of the Ingredient to its Formula
 
         Args:
@@ -281,8 +253,8 @@ class FormulaIngredient(BoundItem):
         else:
             return None
 
-    def decode(self):
-        pass
+    def __hash__(self) -> int:
+        return id(self)
 
 
 class Formula:
@@ -316,7 +288,7 @@ class Formula:
         self.solver = FormulaSolver(self)
 
     @property
-    def items(self):
+    def items(self) -> List[BoundItem]:
         return self.ingredients + self.nutrients
 
     def add_ingredient(self, ingredient: Ingredient, amount: float = None,
@@ -345,7 +317,7 @@ class Formula:
             self.ingredients.append(FormulaIngredient(
                 ingredient, amount, minimum, maximum, formula=self))
 
-    def add_ingredients(self, ingredient_dict: dict):
+    def add_ingredients(self, ingredient_dict: Dict[Ingredient, Tuple[float]]):
         """Add a dict of ingredients
 
         Args:
@@ -380,7 +352,7 @@ class Formula:
             self.nutrients.append(FormulaNutrient(
                 nutrient, amount, minimum, maximum, formula=self))
 
-    def add_nutrients(self, nutrient_dict: dict):
+    def add_nutrients(self, nutrient_dict: Dict[Nutrient, Tuple[float]]):
         """Add a dict of nutrient
 
         Args:
@@ -389,7 +361,7 @@ class Formula:
         for nutrient, (minimum, maximum) in nutrient_dict.items():
             self.add_nutrient(nutrient, minimum=minimum, maximum=maximum)
 
-    def derive_from(self, formula: object):
+    def derive_from(self, formula: Any):
         """Copy the ingredients and nutrients from another formula.
         Does NOT overwrite existing items.
 
@@ -433,7 +405,7 @@ class Formula:
             for variable in self.problem.variables():
                 print(f'{variable.name}: {variable.varValue}')
 
-    def encode(self):
+    def encode(self) -> Dict[str, Any]:
         """Encode for json
 
         Returns:
@@ -441,10 +413,7 @@ class Formula:
         """
         encoded_items = ['name', 'code', 'batch_size', 'cost',
                          'unit', 'ingredients', 'nutrients']
-        return {k: v for k, v in self.__dict__.items() if k in encoded_items}
-
-    def decode(self):
-        pass
+        return {k: v for k, v in vars(self).items() if k in encoded_items}
 
     def to_json(self, indent: int = None):
         return json.dumps(self, default=lambda o: o.encode(), indent=indent)
@@ -589,8 +558,10 @@ class FormulaLibrary:
     """A library of nutrients, ingredients, and formulas
     """
 
-    def __init__(self, name: str, units: str = None, nutrients: list = None,
-                 ingredients: list = None, formulas: list = None):
+    def __init__(self, name: str, units: str = None,
+                 nutrients: List[Nutrient] = None,
+                 ingredients: List[Ingredient] = None,
+                 formulas: List[Formula] = None):
         """[summary]
 
         Args:
@@ -606,48 +577,35 @@ class FormulaLibrary:
         self.ingredients = []
         self.formulas = []
 
-    def add_nutrients(self, *nutrients):
-        for nutrient in nutrients:
-            self.nutrients.append(nutrient)
+    def add_nutrients(self, nutrients: List[Nutrient]):
+            self.nutrients += nutrients
 
-    def add_ingredients(self, *ingredients):
-        for ingredient in ingredients:
-            self.ingredients.append(ingredient)
+    def add_ingredients(self, ingredients: List[Ingredient]):
+        self.ingredients += ingredients
 
-    def add_formulas(self, *formulas):
-        for formula in formulas:
-            self.formulas.append(formula)
+    def add_formulas(self, formulas: List[Formula]):
+        self.formulas += formulas
 
     def optimize(self):
         for formula in self.formulas:
             formula.optimize()
 
-    def encode(self):
+    def encode(self) -> Dict[str, Any]:
         """Encode for json
 
         Returns:
             dict: json dict representation
         """
-        return self.__dict__
+        return vars(self)
 
-    def decode(self):
-        pass
-
-    def to_json(self):
+    def to_json(self) -> str:
         return json.dumps(self, default=lambda o: o.encode(), indent=4)
 
     def save_json(self, path: str):
         with open(path, 'w') as file:
             file.write(self.to_json())
 
-    @staticmethod
-    def from_json(self, path: str):
-        # TODO
-        raise NotImplementedError
-        with open(path, 'r') as file:
-            data = json.load(file)
-
-    def to_csv(self):
+    def to_csv(self) -> str:
         """Return a csv representation of the FormulaLibrary
 
         Returns:
