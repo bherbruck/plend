@@ -1,9 +1,9 @@
-import copy
 import csv
 import io
 import json
 
 import pulp
+from . import utils
 
 
 COLUMN_HEADERS = ['library_name',
@@ -28,7 +28,7 @@ class Item:
             code (str): code of the item
         """
         self.name = name
-        self.code = code
+        self.code = code or utils.clean_name(name)
 
         def encode(self):
             return self.__dict__
@@ -43,7 +43,7 @@ class Nutrient(Item):
             unit (str, optional): unit of the nutrient. Defaults to None.
         """
         self.name = name
-        self.code = code
+        self.code = code or utils.clean_name(name)
         self.unit = unit
 
     def decode(self):
@@ -99,7 +99,7 @@ class Ingredient(Item):
                 Defaults to None.
         """
         self.name = name
-        self.code = code
+        self.code = code or utils.clean_name(name)
         self.amount = amount
         self.cost = cost
         self.nutrients = []
@@ -294,7 +294,7 @@ class Formula:
             Write tests for overlapping ingredients/nutrients
         """
         self.name = name
-        self.code = code
+        self.code = code or utils.clean_name(name)
         self.batch_size = batch_size
         self.unit = unit
         self.cost = 0
@@ -623,7 +623,7 @@ class FormulaLibrary:
         return json.dumps(self, default=lambda o: o.encode(), indent=4)
 
     def save_json(self, path: str):
-        with open(path, 'r') as file:
+        with open(path, 'w') as file:
             file.write(self.to_json())
 
     @staticmethod
