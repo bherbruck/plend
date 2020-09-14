@@ -1,13 +1,16 @@
 import csv
 
+from typing import List, Dict, Any
 
-def read_csv(csv_file):
+
+def read_csv(csv_file: str) -> List[List[Any]]:
     with open(csv_file, 'r') as file:
         reader = csv.reader(file)
         return [row for row in reader]
 
 
-def csv_to_dict(csv_file, headers=None):
+def csv_to_dict(csv_file: str,
+                headers: List[str] = None) -> List[Dict[str, Any]]:
     csv_rows = read_csv(csv_file)
     if not headers:
         headers = csv_rows.pop(0)
@@ -17,7 +20,7 @@ def csv_to_dict(csv_file, headers=None):
     return(csv_dict)
 
 
-def clean_name(name, replacement='_'):
+def clean_name(name, replacement: str = '_') -> str:
     cleaned_name = ''
     for char in name:
         if char == name[0] and not char.isidentifier():
