@@ -29,12 +29,12 @@ def clean_name(name, replacement='_'):
         else:
             cleaned_name += char
     cleaned_name = cleaned_name.lower().replace('__', '_').replace('__', '_')
-    if not cleaned_name.isidentifier:
+    if not cleaned_name.isidentifier():
         raise ValueError()
     return cleaned_name
 
 
-def csv_to_nurtients_py(csv_file, output_file=None, headers=None, nut_pre=''):
+def csv_to_nutrients_py(csv_file, output_file=None, headers=None, nut_pre=''):
     nutrient_dict = csv_to_dict(csv_file, headers)
     lines = [f"{nut_pre}{clean_name(row['Name'])} = Nutrient('{row['Name']}', code='{row['Code']}', unit='{row['Unit']}')"
              for row in nutrient_dict]
