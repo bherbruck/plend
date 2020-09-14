@@ -19,8 +19,23 @@ COLUMN_HEADERS = ['library_name',
                   'item_maximum']
 
 
-class Nutrient:
-    def __init__(self, name, code=None, unit=None):
+class Item:
+    def __init__(self, name: str, code: str = None):
+        """Create an Item
+
+        Args:
+            name (str): name of the item
+            code (str): code of the item
+        """
+        self.name = name
+        self.code = code
+
+        def encode(self):
+            return self.__dict__
+
+
+class Nutrient(Item):
+    def __init__(self, name: str, code: str = None, unit: str = None):
         """Create a Nutrient
 
         Args:
@@ -31,15 +46,12 @@ class Nutrient:
         self.code = code
         self.unit = unit
 
-    def encode(self):
-        return self.__dict__
-
     def decode(self):
         pass
 
 
 class IngredientNutrient:
-    def __init__(self, nutrient, amount=None):
+    def __init__(self, nutrient: Nutrient, amount: float = None):
         """Nutrient with amount for use in an ingredient
         One-to-one relationship with Ingredient
 
@@ -65,20 +77,21 @@ class IngredientNutrient:
     def decode(self):
         pass
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
         return self.nutrient == other
 
     def __hash__(self):
         return id(self)
 
 
-class Ingredient:
-    def __init__(self, name, code=None, amount=None,
-                 cost=0, nutrients=None):
+class Ingredient(Item):
+    def __init__(self, name: str, code: str = None, amount: float = None,
+                 cost: float = 0, nutrients: list = None):
         """Create an Ingredient
 
         Args:
             name (str): name of the ingredient
+            code (str): code of the ingredient
             amount (float, optional): amount of the ingredient. 
                 Defaults to None.
             cost (float, optional): cost of the ingredient. Defaults to None.
@@ -93,7 +106,7 @@ class Ingredient:
         if nutrients is not None:
             self.add_nutrients(nutrients)
 
-    def add_nutrient(self, nutrient, amount):
+    def add_nutrient(self, nutrient: Nutrient, amount: float):
         """Add a single nutrient
 
         Args:
@@ -102,7 +115,7 @@ class Ingredient:
         """
         self.nutrients.append(IngredientNutrient(nutrient, amount))
 
-    def add_nutrients(self, nutrients):
+    def add_nutrients(self, nutrients: dict):
         """Add a dict of nutrients
 
         Args:
@@ -111,16 +124,49 @@ class Ingredient:
         for nutrient, amount in nutrients.items():
             self.add_nutrient(nutrient, amount)
 
-    def encode(self):
-        return self.__dict__
-
     def decode(self):
         pass
 
 
-class FormulaNutrient:
-    def __init__(self, nutrient, amount=None, minimum=0,
-                 maximum=None, formula=None):
+class BoundItem:
+    def __init__(self, item: Item, amount: float = None, minimum: float = 0,
+                 maximum: float = None, formula: object = None):
+        self.item = item
+        self.amount = amount
+        self.minimum = minimum
+        self.maximum = maximum
+        self.formula = formula
+
+    @property
+    def name(self):
+        return self.item.name
+
+    @property
+    def code(self):
+        return self.item.code
+
+    @property
+    def to_dict(self):
+        return dict(vars(self), name=self.name, code=self.code)
+
+    def encode(self):
+        return {'item_name': self.name,
+                'item_code': self.code,
+                'item_amount': self.amount,
+                'item_minimum': self.minimum,
+                'item_maximum': self.maximum}
+
+    def __eq__(self, other):
+        return self.item == other
+
+    def __hash__(self):
+        return id(self)
+
+
+class FormulaNutrient(BoundItem):
+    def __init__(self, nutrient: Nutrient, amount: float = None,
+                 minimum: float = 0,  maximum: float = None,
+                 formula: object = None):
         """Nutrient with constraints and amount
         One-to-one relationship with Nutrient
 
@@ -132,40 +178,24 @@ class FormulaNutrient:
             maximum (float, optional): maximum amount to use in the formula.
                 Defaults to None.
         """
-        self.nutrient = nutrient
+        self.item = nutrient
         self.amount = amount
         self.minimum = minimum
         self.maximum = maximum
         self.formula = formula
 
     @property
-    def name(self):
-        return self.nutrient.name
-
-    @property
-    def code(self):
-        return self.nutrient.code
-
-    def encode(self):
-        return {'name': self.name,
-                'code': self.code,
-                'amount': self.amount,
-                'minimum': self.minimum,
-                'maximum': self.maximum}
+    def nutrient(self):
+        return self.item
 
     def decode(self):
         pass
 
-    def __eq__(self, other):
-        return self.nutrient == other
 
-    def __hash__(self):
-        return id(self)
-
-
-class FormulaIngredient:
-    def __init__(self, ingredient, amount=None, minimum=0,
-                 maximum=None, formula=None):
+class FormulaIngredient(BoundItem):
+    def __init__(self, ingredient: Ingredient, amount: float = None,
+                 minimum: float = 0, maximum: float = None,
+                 formula: object = None):
         """Ingredient with constraints and amount
         One-to-one relationship with Ingredient
 
@@ -178,19 +208,15 @@ class FormulaIngredient:
             maximum (float, optional): maximum amount to use in the formula.
                 Defaults to None.
         """
-        self.ingredient = ingredient
+        self.item = ingredient
         self.amount = amount
         self.minimum = minimum
         self.maximum = maximum
         self.formula = formula
 
     @property
-    def name(self):
-        return self.ingredient.name
-
-    @property
-    def code(self):
-        return self.ingredient.code
+    def ingredient(self):
+        return self.item
 
     @property
     def cost(self):
@@ -226,7 +252,7 @@ class FormulaIngredient:
         if self.formula:
             return self.formula.unit
 
-    def get_contribution(self, nutrient):
+    def get_contribution(self, nutrient: Nutrient):
         """Get the nutrient contribution of the Ingredient to its Formula
 
         Args:
@@ -245,25 +271,13 @@ class FormulaIngredient:
         else:
             return None
 
-    def encode(self):
-        return {'name': self.name,
-                'code': self.code,
-                'amount': self.amount,
-                'minimum': self.minimum,
-                'maximum': self.maximum}
-
     def decode(self):
         pass
 
-    def __eq__(self, other):
-        return self.ingredient == other
-
-    def __hash__(self):
-        return id(self)
-
 
 class Formula:
-    def __init__(self, name, code=None, batch_size=1, unit=None):
+    def __init__(self, name: str, code: str = None, batch_size: float = 1,
+                 unit: str = None):
         """Create a Formula
 
         Args:
@@ -291,7 +305,8 @@ class Formula:
         self.status = 'Unsolved'
         self.solver = FormulaSolver(self)
 
-    def add_ingredient(self, ingredient, amount=None, minimum=0, maximum=None):
+    def add_ingredient(self, ingredient: Ingredient, amount: float = None,
+                       minimum: float = 0, maximum: float = None):
         """Add an ingredient with bounds to the formula, update if it exists
 
         Args:
@@ -316,7 +331,7 @@ class Formula:
             self.ingredients.append(FormulaIngredient(
                 ingredient, amount, minimum, maximum, formula=self))
 
-    def add_ingredients(self, ingredient_dict):
+    def add_ingredients(self, ingredient_dict: dict):
         """Add a dict of ingredients
 
         Args:
@@ -326,7 +341,8 @@ class Formula:
             self.add_ingredient(ingredient, minimum=minimum,
                                 maximum=maximum)
 
-    def add_nutrient(self, nutrient, amount=None, minimum=0, maximum=None):
+    def add_nutrient(self, nutrient: Nutrient, amount: float = None,
+                     minimum: float = 0, maximum: float = None):
         """Add an nutrient with bounds to the formula, update if it exists
 
         Args:
@@ -350,7 +366,7 @@ class Formula:
             self.nutrients.append(FormulaNutrient(
                 nutrient, amount, minimum, maximum, formula=self))
 
-    def add_nutrients(self, nutrient_dict):
+    def add_nutrients(self, nutrient_dict: dict):
         """Add a dict of nutrient
 
         Args:
@@ -359,12 +375,12 @@ class Formula:
         for nutrient, (minimum, maximum) in nutrient_dict.items():
             self.add_nutrient(nutrient, minimum=minimum, maximum=maximum)
 
-    def derive_from(self, formula):
+    def derive_from(self, formula: object):
         """Copy the ingredients and nutrients from another formula.
         Does NOT overwrite existing items.
 
         Args:
-            formula (Formula): Formla to derive from.
+            formula (Formula): Formula to derive from.
         """
         for ing in formula.ingredients:
             self.add_ingredient(ingredient=ing.ingredient, amount=ing.amount,
@@ -416,10 +432,10 @@ class Formula:
     def decode(self):
         pass
 
-    def to_json(self, indent=None):
+    def to_json(self, indent: int = None):
         return json.dumps(self, default=lambda o: o.encode(), indent=indent)
 
-    def to_csv(self, library_name=None, write_header=True):
+    def to_csv(self, library_name: str = None, write_header: bool = True):
         """Return a csv representation of the Formula
 
         Args:
@@ -461,7 +477,7 @@ class Formula:
                           for n in self.nutrients])
         return output.getvalue()
 
-    def save_csv(self, filename, library_name=None):
+    def save_csv(self, filename: str, library_name: str = None):
         """Save the Formula as a csv,
         overwrites any existing file with the same name
 
@@ -476,10 +492,10 @@ class Formula:
 
 
 class FormulaSolver:
-    def __init__(self, formula=None):
+    def __init__(self, formula: Formula = None):
         self.formula = formula
 
-    def create_problem(self, formula=None):
+    def create_problem(self, formula: Formula = None):
         """Create the PuLP problem to be solved
         """
         if formula is None:
@@ -522,7 +538,7 @@ class FormulaSolver:
         formula.variables = variables
         formula.problem = prob
 
-    def solve_problem(self, formula=None):
+    def solve_problem(self, formula: Formula = None):
         """Solve the problem
         """
         if formula is None:
@@ -546,7 +562,7 @@ class FormulaSolver:
                                    if n.name == nutrient.name]) \
                 / formula.batch_size
 
-    def optimize(self, formula=None):
+    def optimize(self, formula: Formula = None):
         """Optimize the formula by creating and solving the formula problem
         """
         if formula is None:
@@ -559,8 +575,8 @@ class FormulaLibrary:
     """A library of nutrients, ingredients, and formulas
     """
 
-    def __init__(self, name, units=None, nutrients=None,
-                 ingredients=None, formulas=None):
+    def __init__(self, name: str, units: str = None, nutrients: list = None,
+                 ingredients: list = None, formulas: list = None):
         """[summary]
 
         Args:
@@ -606,12 +622,12 @@ class FormulaLibrary:
     def to_json(self):
         return json.dumps(self, default=lambda o: o.encode(), indent=4)
 
-    def save_json(self, path):
+    def save_json(self, path: str):
         with open(path, 'r') as file:
             file.write(self.to_json())
 
     @staticmethod
-    def from_json(self, path):
+    def from_json(self, path: str):
         # TODO
         raise NotImplementedError
         with open(path, 'r') as file:
@@ -633,7 +649,7 @@ class FormulaLibrary:
                                          write_header=False)
         return csv_string
 
-    def save_csv(self, path):
+    def save_csv(self, path: str):
         """Save the FormulaLibrary as a csv,
         overwrites any existing file with the same name
 
