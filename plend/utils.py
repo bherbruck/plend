@@ -1,7 +1,5 @@
 import csv
 
-from plend import Formula, Ingredient, Nutrient
-
 
 def read_csv(csv_file):
     with open(csv_file, 'r') as file:
