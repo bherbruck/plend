@@ -1,12 +1,15 @@
 import setuptools
 
 
-with open('README.md', 'r') as fh:
-    long_description = fh.read()
+with open('README.md', 'r') as file:
+    long_description = file.read()
+
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
 
 setuptools.setup(
     name='plend',
-    version='0.1.4',
+    version='0.1.5',
     author='Brennen Herbruck',
     author_email='brennen.hrbruck@gmail.com',
     description='Least Cost Formulation with Python',
@@ -19,5 +22,6 @@ setuptools.setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
+    install_requires=requirements,
     python_requires='>=3.6',
 )
