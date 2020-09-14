@@ -558,7 +558,7 @@ class FormulaLibrary:
     """A library of nutrients, ingredients, and formulas
     """
 
-    def __init__(self, name: str, units: str = None,
+    def __init__(self, name: str, formula_unit: str = None,
                  nutrients: List[Nutrient] = None,
                  ingredients: List[Ingredient] = None,
                  formulas: List[Formula] = None):
@@ -572,10 +572,10 @@ class FormulaLibrary:
             formulas (list[formula], optional): Defaults to None.
         """
         self.name = name
-        self.units = []
-        self.nutrients = []
-        self.ingredients = []
-        self.formulas = []
+        self.formula_unit = formula_unit
+        self.nutrients = nutrients
+        self.ingredients = ingredients
+        self.formulas =formulas
 
     def add_nutrients(self, nutrients: List[Nutrient]):
         self.nutrients += nutrients
