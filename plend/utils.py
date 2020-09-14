@@ -26,7 +26,10 @@ def clean_name(name, replacement='_'):
             cleaned_name += '_'
         else:
             cleaned_name += char
-    cleaned_name = cleaned_name.lower().replace('__', '_').replace('__', '_')
+    cleaned_name = cleaned_name.lower() \
+                               .replace('__', '_') \
+                               .replace('__', '_') \
+                               .strip('_')
     if not cleaned_name.isidentifier():
         raise ValueError()
     return cleaned_name
@@ -82,4 +85,3 @@ def generate_file(filename, *lines):
         text += line + '\n'
     if len(text) > 0:
         write_text(filename, text)
-        
