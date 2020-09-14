@@ -20,6 +20,8 @@ COLUMN_HEADERS = ['library_name',
 
 
 class Item:
+    item_type = None
+
     def __init__(self, name: str, code: str = None):
         """Create an Item
 
@@ -35,6 +37,8 @@ class Item:
 
 
 class Nutrient(Item):
+    item_type = 'nutrient'
+
     def __init__(self, name: str, code: str = None, unit: str = None):
         """Create a Nutrient
 
@@ -85,6 +89,8 @@ class IngredientNutrient:
 
 
 class Ingredient(Item):
+    item_type = 'ingredient'
+
     def __init__(self, name: str, code: str = None, amount: float = None,
                  cost: float = 0, nutrients: list = None):
         """Create an Ingredient
@@ -144,6 +150,10 @@ class BoundItem:
     @property
     def code(self):
         return self.item.code
+    
+    @property
+    def item_type(self):
+        return self.item.item_type
 
     @property
     def to_dict(self):
@@ -304,6 +314,10 @@ class Formula:
         self.problem = None
         self.status = 'Unsolved'
         self.solver = FormulaSolver(self)
+
+    @property
+    def items(self):
+        return self.ingredients + self.nutrients
 
     def add_ingredient(self, ingredient: Ingredient, amount: float = None,
                        minimum: float = 0, maximum: float = None):
