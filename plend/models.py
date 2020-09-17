@@ -573,9 +573,9 @@ class FormulaLibrary:
         """
         self.name = name
         self.formula_unit = formula_unit
-        self.nutrients = nutrients
-        self.ingredients = ingredients
-        self.formulas =formulas
+        self.nutrients = nutrients or []
+        self.ingredients = ingredients or []
+        self.formulas =formulas or []
 
     def add_nutrients(self, nutrients: List[Nutrient]):
         self.nutrients += nutrients
