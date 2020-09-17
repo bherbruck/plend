@@ -270,9 +270,7 @@ class Formula:
                 Defaults to 1.
 
         TODO:
-            Refactor optimization process
-            Add unit to csv output
-            Add items property (ingredients and nutrients in one list)
+            Refactor csv output (remove?)
             Write tests for overlapping ingredients/nutrients
         """
         self.name = name
