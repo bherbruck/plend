@@ -375,35 +375,10 @@ class Formula:
             self.add_nutrient(nutrient=nut.nutrient, amount=nut.amount,
                               minimum=nut.minimum, maximum=nut.maximum)
 
-    def create_problem(self):
-        """Create the PuLP problem to be solved
-        """
-        self.solver.create_problem()
-
-    def solve_problem(self):
-        """Solve the problem
-        """
-        self.solver.solve_problem()
-
     def optimize(self):
         """Optimize the formula by creating and solving the formula problem
         """
         self.solver.optimize()
-
-    def show_problem(self):
-        """Prints the problem's function
-        """
-        if self.problem:
-            print(self.problem)
-
-    def show_output(self):
-        """Prints the problem's output
-        """
-        print(f'Formula: {self.name}')
-        print(f'Status: {self.status}')
-        if self.problem:
-            for variable in self.problem.variables():
-                print(f'{variable.name}: {variable.varValue}')
 
     def encode(self) -> Dict[str, Any]:
         """Encode for json

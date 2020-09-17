@@ -76,8 +76,6 @@ default,Starter,starter,0,Unsolved,nutrient,Calcium,calcium,,4,5"""
                          self.starter_csv.splitlines())
     
     def test_Formula_methods(self):
-        self.starter.create_problem()
-        self.starter.solve_problem()
         self.starter.optimize()
 
     def compare_csv(self, csv1, csv2):
