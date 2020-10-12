@@ -60,8 +60,8 @@ class IngredientNutrient:
 class Ingredient(Item):
     item_type = 'ingredient'
 
-    def __init__(self, name: str, code: str = None, amount: float = None,
-                 cost: float = 0, nutrients: Dict[Nutrient, float] = None):
+    def __init__(self, name: str, code: str = None, cost: float = 0,
+                 nutrients: Dict[Nutrient, float] = None):
         """Create an Ingredient
 
         Args:
@@ -75,7 +75,6 @@ class Ingredient(Item):
         """
         self.name = name
         self.code = code or utils.clean_name(name)
-        self.amount = amount
         self.cost = cost
         self.nutrients = []
         if nutrients is not None:
