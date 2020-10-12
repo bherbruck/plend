@@ -1,23 +1,7 @@
-import csv
-import io
-import json
 from typing import List, Dict, Any, Tuple
 
 import pulp
 from . import utils
-
-
-COLUMN_HEADERS = ['library_name',
-                  'formula_name',
-                  'formula_code',
-                  'formula_cost',
-                  'formula_status',
-                  'item_type',
-                  'item_name',
-                  'item_code',
-                  'item_amount',
-                  'item_minimum',
-                  'item_maximum']
 
 
 class Item:
@@ -32,9 +16,6 @@ class Item:
         """
         self.name = name
         self.code = code or utils.clean_name(name)
-
-    def encode(self) -> dict:
-        return vars(self)
 
 
 class Nutrient(Item):
@@ -71,10 +52,6 @@ class IngredientNutrient:
     @property
     def code(self) -> str:
         return self.nutrient.code
-
-    def encode(self) -> Dict[str, Any]:
-        return {'name': self.name,
-                'amount': self.amount}
 
     def __eq__(self, other: Nutrient) -> bool:
         return self.nutrient == other
@@ -143,13 +120,6 @@ class BoundItem:
     @property
     def item_type(self) -> str:
         return self.item.item_type
-
-    def encode(self) -> Dict[str, Any]:
-        return {'item_name': self.name,
-                'item_code': self.code,
-                'item_amount': self.amount,
-                'item_minimum': self.minimum,
-                'item_maximum': self.maximum}
 
     def __eq__(self, other: object) -> bool:
         return self.item == other
@@ -270,7 +240,6 @@ class Formula:
                 Defaults to 1.
 
         TODO:
-            Refactor csv output (remove?)
             Write tests for overlapping ingredients/nutrients
         """
         self.name = name
@@ -377,74 +346,6 @@ class Formula:
         """Optimize the formula by creating and solving the formula problem
         """
         self.solver.optimize()
-
-    def encode(self) -> Dict[str, Any]:
-        """Encode for json
-
-        Returns:
-            dict: json dict representation
-        """
-        encoded_items = ['name', 'code', 'batch_size', 'cost',
-                         'unit', 'ingredients', 'nutrients']
-        return {k: v for k, v in vars(self).items() if k in encoded_items}
-
-    def to_json(self, indent: int = None):
-        return json.dumps(self, default=lambda o: o.encode(), indent=indent)
-
-    def to_csv(self, library_name: str = None, write_header: bool = True):
-        """Return a csv representation of the Formula
-
-        Args:
-            library_name (str, optional): name of the library.
-                Defaults to None.
-            write_header (bool, optional): whether or not to write the header.
-                Defaults to True.
-
-        Returns:
-            str: csv table representation
-        """
-        output = io.StringIO()
-        writer = csv.writer(output)
-        if write_header:
-            writer.writerow(COLUMN_HEADERS)
-        writer.writerows([[library_name if library_name else 'default',
-                           self.name,
-                           self.code,
-                           self.cost,
-                           self.status,
-                           'ingredient',
-                           i.name,
-                           i.code,
-                           i.amount,
-                           i.minimum,
-                           i.maximum]
-                          for i in self.ingredients])
-        writer.writerows([[library_name if library_name else 'default',
-                           self.name,
-                           self.code,
-                           self.cost,
-                           self.status,
-                           'nutrient',
-                           n.name,
-                           n.code,
-                           n.amount,
-                           n.minimum,
-                           n.maximum]
-                          for n in self.nutrients])
-        return output.getvalue()
-
-    def save_csv(self, filename: str, library_name: str = None):
-        """Save the Formula as a csv,
-        overwrites any existing file with the same name
-
-        Args:
-            filename (str): name of the file
-            library_name (str, optional): name of the library.
-                Defaults to None.
-        """
-        with open(filename, 'w', newline='') as file:
-            file.write(self.to_csv(
-                library_name=library_name, write_header=True))
 
 
 class FormulaSolver:
@@ -562,44 +463,3 @@ class FormulaLibrary:
     def optimize(self):
         for formula in self.formulas:
             formula.optimize()
-
-    def encode(self) -> Dict[str, Any]:
-        """Encode for json
-
-        Returns:
-            dict: json dict representation
-        """
-        return vars(self)
-
-    def to_json(self) -> str:
-        return json.dumps(self, default=lambda o: o.encode(), indent=4)
-
-    def save_json(self, path: str):
-        with open(path, 'w') as file:
-            file.write(self.to_json())
-
-    def to_csv(self) -> str:
-        """Return a csv representation of the FormulaLibrary
-
-        Returns:
-            str: csv table representation
-        """
-        csv_string = ''
-        output = io.StringIO()
-        writer = csv.writer(output)
-        writer.writerow(COLUMN_HEADERS)
-        csv_string += output.getvalue()
-        for formula in self.formulas:
-            csv_string += formula.to_csv(library_name=self.name,
-                                         write_header=False)
-        return csv_string
-
-    def save_csv(self, path: str):
-        """Save the FormulaLibrary as a csv,
-        overwrites any existing file with the same name
-
-        Args:
-            filename (str): name of the file
-        """
-        with open(path, 'w', newline='') as file:
-            file.write(self.to_csv())
