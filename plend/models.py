@@ -228,7 +228,8 @@ class FormulaIngredient(BoundItem):
 
 class Formula:
     def __init__(self, name: str, code: str = None, batch_size: float = 1,
-                 unit: str = None):
+                 unit: str = None, nutrients: Dict[Nutrient, tuple] = None,
+                 ingredients: Dict[Ingredient, tuple] = None):
         """Create a Formula
 
         Args:
@@ -237,6 +238,9 @@ class Formula:
             batch_size (float, optional): size of the batch,
                 used for optimization all ingredient constraints must apply.
                 Defaults to 1.
+            unit (str): unused
+            nutrients (dict): nutrients to add
+            ingredients (dict): ingredients to add
 
         TODO:
             Write tests for overlapping ingredients/nutrients
@@ -246,8 +250,12 @@ class Formula:
         self.batch_size = batch_size
         self.unit = unit
         self.cost = 0
-        self.ingredients = []
         self.nutrients = []
+        self.ingredients = []
+        if nutrients is not None:
+            self.add_nutrients(nutrients)
+        if ingredients is not None:
+            self.add_ingredients(ingredients)
         self.variables = {}
         self.problem = None
         self.status = 'Unsolved'
