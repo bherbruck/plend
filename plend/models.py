@@ -281,7 +281,8 @@ class Formula:
         # add a new nutrient if it does not exist
         else:
             self.ingredients.append(FormulaIngredient(
-                ingredient, amount, minimum, maximum, formula=self))
+                ingredient, amount, minimum, maximum or self.batch_size,
+                formula=self))
 
     def add_ingredients(self, ingredient_dict: Dict[Ingredient, Tuple[float]]):
         """Add a dict of ingredients
