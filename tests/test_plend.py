@@ -65,15 +65,15 @@ def test_solve_formula():
         moisture: 1
     })
 
-    mud = Formula('Mud', batch_size=2000)
-    mud.add_ingredients({
-        dirt:  (0, None),
-        water: (0, None)
-    })
-    mud.add_nutrients({
-        carbon:   (0.5, None),
-        moisture: (0.2, None)
-    })
+    mud = Formula('Mud', batch_size=2000,
+                  nutrients={
+                      carbon:   (0.5, None),
+                      moisture: (0.2, None)
+                  },
+                  ingredients={
+                      dirt:  (0, None),
+                      water: (0, None)
+                  })
 
     mud.optimize()
 
